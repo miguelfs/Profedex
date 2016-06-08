@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- xml drawable to display a splash screen when the app starts. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@color/profedexRed"/>
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/profedex_splash_drawable_small"/>
+    </item>
+
+</layer-list>

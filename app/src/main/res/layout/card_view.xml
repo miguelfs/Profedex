@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardUseCompatPadding="true"
+    android:id="@+id/cv"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <AutoCompleteTextView
+            android:id="@+id/ConsumableTextView"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+
+            android:hint="Comida/Bebida"
+            android:textIsSelectable="false"
+            android:layout_toStartOf="@+id/priceTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/priceTextView"
+            android:layout_marginRight="16dp"/>
+
+
+        <EditText
+            android:inputType="numberDecimal"
+            android:id="@+id/priceTextView"
+            android:hint="Preço"
+            android:maxLength="5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="false"
+            android:layout_below="@+id/ConsumableTextView">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/unitsSpinner"
+                    android:layout_toLeftOf="@+id/DivideConsumableSpinner"
+                    android:layout_alignParentLeft="true"/>
+
+                <Spinner
+                    android:id="@+id/DivideConsumableSpinner"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
