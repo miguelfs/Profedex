@@ -14,15 +14,16 @@ The user needs to register and login to submit new data about the professors to 
 
 ##Data
 A database will be created to store the data from the class Professor which will include:
-• Professor name
-• Professor description
-• Professor's room and classrooms he/she 
-• Subjects he/she teaches
-• Where they live 
-• What they eat
-• Audio
-• Difficulty level
-• Didacticism level
+
+* Professor name
+* Professor description
+* Professor's room and classrooms he/she teaches in
+* Subjects he/she teaches
+* Where they live 
+* What they eat
+* Audio
+* Difficulty level
+* Didacticism level
 
 ##Activies
 The app will use two main Activities:
