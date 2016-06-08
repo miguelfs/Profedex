@@ -9,6 +9,9 @@ O aplicativo ajuda alunos a encontrarem descrições de seus professores, ajudan
 Há um sistema de report para relatar qualquer tipo de informação agressiva, falsa ou abusiva.
 O aplicativo contará com ferramenta de identificação facial, para facilitar a identificação do professor.
 
+##Instâncias de usuário
+O usuário precisa efetuar cadastro e login para submeter novos dados de professores no aplicativo. 
+
 ##Data
 Será criado um banco de dados, que contém uma estrutura de dados da classe Professor, que contará com:
 •Nome do professor;
@@ -28,47 +31,3 @@ O aplicativo utiliza duas Activities principais:
 
 ##Termos de uso
 Os desenvolvedores do aplicativo não se responsabilizam pelo conteúdo gerado pelos usuários.
-
-name of the projects and all sub-modules and libraries (sometimes they are named different and very confusing to new users)
-•descriptions of all the project, and all sub-modules and libraries
-•5-line code snippet on how its used (if it's a library)
-•copyright and licensing information (or "Read LICENSE") 
-•instruction to grab the documentation
-•instructions to install, configure, and to run the programs
-•instruction to grab the latest code and detailed instructions to build it (or quick overview and "Read INSTALL")
-•list of authors or "Read AUTHORS"
-•instructions to submit bugs, feature requests, submit patches, join mailing list, get announcements, or join the user or dev community in other forms
-•other contact info (email address, website, company name, address, etc)
-•a brief history if it's a replacement or a fork of something else
-•legal notices (crypto stuff)
-
-
-Main Features
-Installation
-Usage
-HTTP Method
-Request URL
-Request Items
-JSON
-Forms
-HTTP Headers
-Authentication
-HTTP Redirects
-Proxies
-HTTPS
-Output Options
-Redirected Input
-Terminal Output
-Redirected Output
-Download Mode
-Streamed Responses
-Sessions
-Config
-Scripting
-Interface Design
-Support
-Authors
-Logo
-Contribute
-Change Log
-Licence
