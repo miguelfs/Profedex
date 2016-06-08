@@ -6,6 +6,7 @@ Profedex is an Android application to display information and data about teacher
 O aplicativo ajuda alunos a encontrarem descrições de seus professores, ajudando-os em sua vida acadêmica. O aplicativo contém informações acerca dos professores da Escola Politécnica. Os alunos podem incluir características positivas e negativas dos professores. Os próprios alunos incluem informações e dados acerca dos professores.
 
 ##Main Features
+Há um sistema de report para relatar qualquer tipo de informação agressiva, falsa ou abusiva.
 O aplicativo contará com ferramenta de identificação facial, para facilitar a identificação do professor.
 
 ##Data
@@ -25,6 +26,8 @@ O aplicativo utiliza duas Activities principais:
 •Activity com lista de professores (Recycler View);
 •Activity com dados e descrição do professor (Tabbed Activity);
 
+##Termos de uso
+Os desenvolvedores do aplicativo não se responsabilizam pelo conteúdo gerado pelos usuários.
 
 name of the projects and all sub-modules and libraries (sometimes they are named different and very confusing to new users)
 •descriptions of all the project, and all sub-modules and libraries
