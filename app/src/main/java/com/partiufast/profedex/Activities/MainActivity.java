@@ -1,4 +1,4 @@
-package com.partiufast.profedex;
+package com.partiufast.profedex.Activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.partiufast.profedex.R;
 
 import java.util.List;
 
