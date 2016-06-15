@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/select_campus"
+        android:title="Selecionar Campus"
+        app:showAsAction="ifRoom"
+        android:icon="@drawable/ic_account_balance_white_24dp"/>
 </menu>
