@@ -1,4 +1,4 @@
-package com.partiufast.profedex.Activities;
+package com.partiufast.profedex.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
