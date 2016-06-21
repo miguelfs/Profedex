@@ -1,4 +1,4 @@
-package com.partiufast.profedex.Activities;
+package com.partiufast.profedex.activities;
 
 import android.content.Intent;
 import android.graphics.Typeface;

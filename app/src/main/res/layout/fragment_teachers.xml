@@ -1,4 +1,4 @@
-<!--?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,8 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.partiufast.profedex.activities.MainActivity"
-    tools:showIn="@layout/app_bar_main">
+    tools:context="com.partiufast.profedex.fragments.TeacherListFragment">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/teacherRecyclerView"
@@ -15,9 +14,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-</RelativeLayout-->
-<FrameLayout android:id="@+id/flContent"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-</FrameLayout>
+</RelativeLayout>

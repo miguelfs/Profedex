@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.partiufast.profedex">
+          package="com.partiufast.profedex">
 
     <application
         android:allowBackup="true"
@@ -12,24 +12,22 @@
             android:name=".Activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".Activities.OakActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/OakTheme" />
+            android:theme="@style/OakTheme"/>
         <activity
             android:name=".Activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".Activities.AddTeacherActivity"></activity>
-        <activity
-            android:name=".Activities.CentroActivity"
-            android:label="@string/title_activity_centro"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".Activities.AddTeacherActivity">
+        </activity>
     </application>
 
 </manifest>
