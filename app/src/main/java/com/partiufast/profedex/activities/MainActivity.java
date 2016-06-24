@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         TeacherListFragment.OnFragmentInteractionListener,
         ProfileFragment.OnLogoutClickedListener {
 
+    static final int LOGIN_REQUEST = 0;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity
 
     private ProfileFragment mProfileFragment;
     private TeacherListFragment mTeacherFragment;
+
+    public String mName;
+    public String mEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,20 +96,37 @@ public class MainActivity extends AppCompatActivity
 
         // Fetching user details from sqlite
         HashMap<String, String> user = db.getUserDetails();
-        String name = user.get("name");
-        String email = user.get("email");
-        mProfileFragment.setUserInfo(name,email);
+        mName = user.get("name");
+        mEmail = user.get("email");
+
+        // Start with teacher list
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).commit();
     }
 
     private void logoutUser() {
         session.setLogin(false);
-
         db.deleteUsers();
+        //mProfileFragment.setUserInfo(getResources().getString(R.string.not_logged), "");
+    }
 
+    private void loginUser(){
         // Launching the login activity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+        startActivityForResult(intent,LOGIN_REQUEST);
+        //finish();
+        //mProfileFragment.setLogin(true);
+    }
+
+    public void loggedUser(){
+        HashMap<String, String> user = db.getUserDetails();
+        mName = user.get("name");
+        mEmail = user.get("email");
+        mProfileFragment.setUserInfo(mName, mEmail, true);
+    }
+
+    public boolean logged() {
+        return session.isLoggedIn();
     }
 
     @Override
@@ -213,6 +234,17 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    protected void onActivityResult(int requestCode, int resultCode,
+                                    Intent data) {
+        if (requestCode == LOGIN_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                loggedUser();
+            }
+        }
+    }
+    /*
+    Fragment Interaction
+     */
     public void onFragmentInteractionTeacher(Uri uri){
         //you can leave it empty
     }
@@ -221,6 +253,11 @@ public class MainActivity extends AppCompatActivity
         //you can leave it empty
     }
     public void onLogoutClicked() {
-        logoutUser();
+        if (!session.isLoggedIn()) {
+            loginUser();
+        } else {
+            logoutUser();
+            mProfileFragment.setUserInfo("Faça Login", "", false);
+        }
     }
 }

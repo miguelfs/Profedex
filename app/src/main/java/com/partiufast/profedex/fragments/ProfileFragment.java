@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.activities.MainActivity;
 import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
 
@@ -25,11 +26,10 @@ import com.partiufast.profedex.helper.SessionManager;
  */
 public class ProfileFragment extends Fragment {
 
-    private String mName = "Guest";
-    private String mEmail = "Email";
     private TextView txtName;
     private TextView txtEmail;
-    private Button btnLogout;
+    private Button btnLoginout;
+    private boolean mLogged = false;
 
     private SQLiteHandler db;
     private SessionManager session;
@@ -83,15 +83,23 @@ public class ProfileFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
-        btnLogout = (Button) rootView.findViewById(R.id.btnLogout);
-        txtName.setText(mName);
-        txtEmail.setText(mEmail);
-        btnLogout.setOnClickListener(new View.OnClickListener() {
+        btnLoginout = (Button) rootView.findViewById(R.id.btnLogout);
+        MainActivity activity = (MainActivity) getActivity();
+        mLogged = activity.logged();
+        String name = activity.mName;
+        String email = activity.mEmail;
+        txtName.setText(name);
+        txtEmail.setText(email);
+        btnLoginout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ((OnLogoutClickedListener)mListener).onLogoutClicked();
             }
         });
+        if(mLogged)
+            btnLoginout.setText(R.string.btn_logout);
+        else
+            btnLoginout.setText(R.string.btn_login);
         return rootView;
     }
 
@@ -139,8 +147,16 @@ public class ProfileFragment extends Fragment {
         void onFragmentInteractionProfile(Uri uri);
     }
 
-    public void setUserInfo(String name, String email){
-        mName = name;
-        mEmail = email;
+    /*
+    TODO: Create a class User
+     */
+    public void setUserInfo(String name, String email, boolean logged){
+        txtName.setText(name);
+        txtEmail.setText(email);
+        mLogged = logged;
+        if(logged)
+            btnLoginout.setText(R.string.btn_logout);
+        else
+            btnLoginout.setText(R.string.btn_login);
     }
 }

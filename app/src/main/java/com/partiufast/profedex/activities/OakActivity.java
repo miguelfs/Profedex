@@ -40,6 +40,7 @@ public class OakActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(OakActivity.this, MainActivity.class);
                 //Intent intent = new Intent(OakActivity.this, CentroActivity.class);
+                finish();
                 mp.stop();
                 startActivity(intent);
             }
