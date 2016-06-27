@@ -28,5 +28,8 @@
     <string name="welcome">Welcome</string>
     <string name="btn_logout">LOGOUT</string>
     <string name="name">Nome</string>
-	<string name="title_activity_centro">CentroActivity</string>
+    <string name="title_activity_centro">CentroActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

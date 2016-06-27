@@ -23,6 +23,7 @@ public class SplashActivity extends AppCompatActivity {
 
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putBoolean("firstRun", false).commit();
+                finish();
 
         } else {
 /*
@@ -44,6 +45,7 @@ public class SplashActivity extends AppCompatActivity {
 
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("firstRun", false).commit();
+            finish();
         }
     }
 

@@ -25,6 +25,7 @@ import com.partiufast.profedex.R;
 import com.partiufast.profedex.Teacher;
 import com.partiufast.profedex.TeacherAdapater;
 import com.partiufast.profedex.fragments.ProfileFragment;
+import com.partiufast.profedex.fragments.TeacherInfoFragment;
 import com.partiufast.profedex.fragments.TeacherListFragment;
 import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
@@ -37,6 +38,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ProfileFragment.OnFragmentInteractionListener,
         TeacherListFragment.OnFragmentInteractionListener,
+        TeacherInfoFragment.OnFragmentInteractionListener,
         ProfileFragment.OnLogoutClickedListener {
 
     static final int LOGIN_REQUEST = 0;
@@ -129,11 +131,22 @@ public class MainActivity extends AppCompatActivity
         return session.isLoggedIn();
     }
 
-    @Override
+   /* @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }*/
+
+
+    //permite que, ao clicar em voltar, retorne para a fragment anterior na pilha.
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
         } else {
             super.onBackPressed();
         }
@@ -190,10 +203,10 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_camera:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment).addToBackStack("fragment").commit();
                 break;
             case R.id.nav_gallery:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).addToBackStack("fragment").commit();
                 break;
             case R.id.nav_slideshow:
                 break;
@@ -260,4 +273,11 @@ public class MainActivity extends AppCompatActivity
             mProfileFragment.setUserInfo("Faça Login", "", false);
         }
     }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
 }
