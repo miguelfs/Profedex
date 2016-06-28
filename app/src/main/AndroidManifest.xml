@@ -2,14 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.partiufast.profedex">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
+        android:name="com.partiufast.profedex.app.AppController"
         android:allowBackup="true"
         android:icon="@drawable/logo_profedex"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -18,16 +20,37 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.OakActivity"
+            android:name=".activities.OakActivity"
             android:screenOrientation="portrait"
             android:theme="@style/OakTheme"/>
         <activity
-            android:name=".Activities.MainActivity"
+            android:name=".activities.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".Activities.AddTeacherActivity">
+        <activity android:name=".activities.AddTeacherActivity">
         </activity>
+        <activity
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.RegisterActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activities.CentroActivity"
+            android:label="@string/title_activity_centro"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
+
 
 </manifest>
