@@ -28,7 +28,7 @@ public class CentroActivity extends AppCompatActivity {
     }
 
     private void universityListView() {
-        /*
+
         String[] universidade = {"Centro de Tecnologia", "Centro 2", "Centro 3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lista_centro, universidade);
         //setListAdapter(new ArrayAdapter<String>(this,
@@ -46,6 +46,7 @@ public class CentroActivity extends AppCompatActivity {
 
                     Intent myIntent = new Intent(CentroActivity.this, MainActivity.class);
                     startActivityForResult(myIntent, 0);
+                    finish();
                 }
 
                 if(position == 1)
@@ -63,7 +64,6 @@ public class CentroActivity extends AppCompatActivity {
                 }
             }
         });
-    */
     }
 
 }

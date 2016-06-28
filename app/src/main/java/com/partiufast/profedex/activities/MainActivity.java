@@ -171,21 +171,8 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
         if (id == R.id.select_campus){
-            new AlertDialog.Builder(MainActivity.this)
-                    .setMessage("Defina a universidade:")
-                    .setMessage("Defina o campus:")
-                    .setItems(new String[]{"UFRJ", "UERJ", "PUC"}, null)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // continue with delete
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
-                        }
-                    })
-                    .show();
+            Intent intent = new Intent(MainActivity.this, CentroActivity.class);
+            startActivityForResult(intent, 0);
             return true;
         }
         item.setChecked(true);
