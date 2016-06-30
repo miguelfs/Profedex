@@ -28,7 +28,9 @@
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.AddTeacherActivity">
+        <activity android:name=".activities.AddTeacherActivity"
+                  android:label="@string/add_teacher_label"
+            >
         </activity>
         <activity
             android:name=".activities.LoginActivity"
@@ -49,7 +51,7 @@
         <activity
             android:name=".activities.CentroActivity"
             android:label="@string/title_activity_centro"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 
