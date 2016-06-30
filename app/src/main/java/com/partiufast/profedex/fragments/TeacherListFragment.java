@@ -90,8 +90,8 @@ public class TeacherListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapater);
         for(int index = 0; index < 150; index++){
-            mTeacherList.add(new Teacher("Professor Carvalho", getResources().getString(R.string.lorem_ipsum), "H 216",
-                    Arrays.asList("Circuitos Elétricos I", "Instrumentação e Técnicas de Medidas"),8, 8 ));
+            mTeacherList.add(new Teacher("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216",
+                    Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
             mTeacherAdapater.notifyDataSetChanged();
         }
         return rootView;
