@@ -43,10 +43,11 @@ public class OakActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Intent intent = new Intent(OakActivity.this, MainActivity.class);
-                Intent intent = new Intent(OakActivity.this, CentroActivity.class);
+                Intent intent = new Intent(OakActivity.this, MainActivity.class);
                 finish();
                 mIntroductionMusic.stop();
                 startActivity(intent);
+                finish();
             }
         });
         mNextOakButton.setSoundEffectsEnabled(false);
