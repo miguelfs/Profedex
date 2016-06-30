@@ -17,7 +17,9 @@ public class OakActivity extends AppCompatActivity {
     ImageView oakImageView;
     Button mNextOakButton, mJumpOakButton;
     int index = 0;
-    MediaPlayer mp;
+    int oakIndex = 1;
+    String[] mOakArray;
+    MediaPlayer mIntroductionMusic, mClickButtonSound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +32,10 @@ public class OakActivity extends AppCompatActivity {
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/pkmn.ttf");
         textView.setTypeface(font);
 
-        mp = MediaPlayer.create(this, R.raw.oaksmonologue);
-        mp.start();
+        mOakArray = getResources().getStringArray(R.array.oak_array);
+        mIntroductionMusic = MediaPlayer.create(this, R.raw.oaksmonologue);
+        mClickButtonSound = MediaPlayer.create(this, R.raw.clickcompact);
+        mIntroductionMusic.start();
 
         textView.setCharacterDelay(50);
         textView.animateText(getResources().getString(R.string.oak_text1));
@@ -41,42 +45,31 @@ public class OakActivity extends AppCompatActivity {
                 Intent intent = new Intent(OakActivity.this, MainActivity.class);
                 //Intent intent = new Intent(OakActivity.this, CentroActivity.class);
                 finish();
-                mp.stop();
+                mIntroductionMusic.stop();
                 startActivity(intent);
             }
         });
+        mNextOakButton.setSoundEffectsEnabled(false);
         mNextOakButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (index) {
-                    case 0:
-                        textView.animateText(getResources().getString(R.string.oak_text2));
-                        index++;
-                        break;
-                    case 1:
-                        textView.animateText(getResources().getString(R.string.oak_text3));
-                        index++;
-                        break;
-                    case 2:
-                        textView.animateText(getResources().getString(R.string.oak_text4));
-                        index++;
-                        break;
-                    case 3:
-                        textView.animateText(getResources().getString(R.string.oak_text5));
-                        index++;
-                        break;
-                    case 4:
-                        textView.animateText(getResources().getString(R.string.oak_text6));
-                        index++;
-                        break;
-                    case 5:
-                        textView.animateText(getResources().getString(R.string.oak_text7));
-                        mNextOakButton.setVisibility(View.GONE);
-                        index++;
-                        break;
-                    default:
-                        index++;
-                }
+                mClickButtonSound.start();
+                    if (index % 2 == 0){
+                        if (!textView.isTextFullyPrinted()) {
+                            textView.updateToFullText();
+                            }
+                        else{
+                            textView.animateText(mOakArray[oakIndex]);
+                            oakIndex++;
+                        }
+                    }
+                    else{
+                        textView.animateText(mOakArray[oakIndex]);
+                        oakIndex++;
+                    }
+                index++;
+                if (index == 13)
+                mNextOakButton.setVisibility(View.GONE);
             }
         });
 

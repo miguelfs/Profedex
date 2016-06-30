@@ -5,9 +5,6 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-/**
- * Created by Miguel on 16/04/2016.
- */
 public class Typewriter extends TextView {
 
     private CharSequence mText;
@@ -41,6 +38,15 @@ public class Typewriter extends TextView {
         setText("");
         mHandler.removeCallbacks(characterAdder);
         mHandler.postDelayed(characterAdder, mDelay);
+    }
+
+    public void updateToFullText() {
+        mHandler.removeCallbacks(characterAdder);
+        setText(mText);
+    }
+
+    public boolean isTextFullyPrinted(){
+        return mIndex > mText.length();
     }
 
     public void setCharacterDelay(long millis) {

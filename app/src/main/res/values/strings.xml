@@ -1,9 +1,20 @@
 <resources>
     <string name="app_name">Profedex</string>
-    <string name="oak_text1">Olá! Bem-vindo ao Centro de Tecnologia da UFRJ! Meu nome é Carvalho!</string>
+
+    <string-array name="oak_array">
+        <item>Ola! Bem-vindo ao Centro de Tecnologia da UFRJ! Meu nome é Carvalho!</item>
+        <item>Sou Doutor, Orientador, Coordenador, Chefe de Departamento, Senhor Imperador do Universo Triunfal, mas pode me chamar de Professor Carvalho!</item>
+        <item>Esse campus é habitado por estranhas criaturas chamadas PROFESSORES! Para algumas pessoas, PROFESSORES são prestativos,</item>
+        <item>Para outras, PROFESSORES são memes e participam de Polifights. Por minha vez… Estudo PROFESSORES como profissão.</item>
+        <item>Eu ia lhe perguntar seu nome e lhe apresentar ao meu neto, mas ele sumiu e deve estar em Pernambuco no momento.</item>
+        <item>Estou interessado em preencher uma Profedéx com as descricoes de 150 professores. Você poderia me ajudar?</item>
+        <item>VOCE! Sua aventura no mundo da UFRJ esta para se iniciar. Um mundo de sonhos e aventuras lhe aguardam! Ao trabalho!!</item>
+    </string-array>
+
+    <string name="oak_text1">Ola! Bem-vindo ao Centro de Tecnologia da UFRJ! Meu nome é Carvalho!</string>
     <string name="oak_text2"> Sou Doutor, Orientador, Coordenador, Chefe de Departamento, Senhor Imperador do Universo Triunfal, mas pode me chamar de Professor Carvalho!</string>
     <string name="oak_text3">Esse campus é habitado por estranhas criaturas chamadas PROFESSORES! Para algumas pessoas, PROFESSORES são prestativos,</string>
-    <string name="oak_text4">Para outras, PROFESSORES são úteis como memes e participando de Polifights. Por minha vez… Estudo PROFESSORES como profissão.</string>
+    <string name="oak_text4">Para outras, PROFESSORES são memes e participam de Polifights. Por minha vez… Estudo PROFESSORES como profissão.</string>
     <string name="oak_text5"> Eu ia lhe perguntar seu nome e lhe apresentar ao meu neto, mas ele sumiu e deve estar em Pernambuco no momento.</string>
     <string name="oak_text6">Estou interessado em preencher uma Profedéx com as descricoes de 150 professores. Você poderia me ajudar?</string>
     <string name="oak_text7">VOCE! Sua aventura no mundo da UFRJ esta para se iniciar. Um mundo de sonhos e aventuras lhe aguardam! Ao trabalho!!</string>
