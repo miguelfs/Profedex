@@ -29,6 +29,9 @@ public class CentroActivity extends AppCompatActivity {
 
     private void universityListView() {
 
+        /**
+         * This should be getting avaliable centers from server
+         */
         String[] universidade = {"Centro de Tecnologia", "Centro 2", "Centro 3"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.lista_centro, universidade);
         //setListAdapter(new ArrayAdapter<String>(this,
@@ -40,28 +43,8 @@ public class CentroActivity extends AppCompatActivity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
-                if(position == 0)
-                {
-
-                    Intent myIntent = new Intent(CentroActivity.this, MainActivity.class);
-                    startActivityForResult(myIntent, 0);
-                    finish();
-                }
-
-                if(position == 1)
-                {
-
-                    Intent myIntent =  new Intent(CentroActivity.this, OakActivity.class);
-                    startActivityForResult(myIntent, 0);
-                }
-
-                if(position == 2)
-                {
-
-                    Intent myIntent =  new Intent(CentroActivity.this, MainActivity.class);
-                    startActivityForResult(myIntent, 0);
-                }
+                setResult(position);
+                finish();
             }
         });
     }
