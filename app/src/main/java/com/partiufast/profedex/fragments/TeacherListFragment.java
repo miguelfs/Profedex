@@ -6,17 +6,26 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.partiufast.profedex.DividerItemDecoration;
 import com.partiufast.profedex.R;
-import com.partiufast.profedex.Teacher;
+import com.partiufast.profedex.api.ApiInterface;
+import com.partiufast.profedex.api.ApiClient;
+import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.TeacherAdapater;
+import com.partiufast.profedex.data.ProfessorResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -29,9 +38,11 @@ import java.util.Arrays;
  */
 public class TeacherListFragment extends Fragment {
 
+    private static final String TAG = TeacherListFragment.class.getSimpleName();
+
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
-    private ArrayList<Teacher> mTeacherList = new ArrayList<>();
+    private ArrayList<Professor> mProfessorList = new ArrayList<>();
     private TeacherAdapater mTeacherAdapater;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -84,16 +95,38 @@ public class TeacherListFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_teachers, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.teacherRecyclerView);
-        mTeacherAdapater = new TeacherAdapater(mTeacherList);
+        mTeacherAdapater = new TeacherAdapater(mProfessorList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapater);
+
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ProfessorResponse> call = apiService.getProfessors();
+        call.enqueue(new Callback<ProfessorResponse>() {
+            @Override
+            public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
+                List<Professor> professors = response.body().getProfessors();
+                Log.d(TAG, "Number of professors received: " + professors.size());
+                mProfessorList.clear();
+                mProfessorList.addAll(professors);
+                mTeacherAdapater.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<ProfessorResponse>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+        /*
         for(int index = 0; index < 150; index++){
-            mTeacherList.add(new Teacher("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216",
+            mProfessorList.add(new Professor("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216",
                     Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
             mTeacherAdapater.notifyDataSetChanged();
-        }
+        }*/
         return rootView;
     }
 

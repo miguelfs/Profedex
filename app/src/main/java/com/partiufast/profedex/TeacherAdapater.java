@@ -2,19 +2,19 @@ package com.partiufast.profedex;
 
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
 
 import java.util.ArrayList;
 
 public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teacherItemViewHolder> {
-    ArrayList<Teacher> mTeacherList;
+    ArrayList<Professor> mProfessorList;
     Context mContext;
 
     public class teacherItemViewHolder extends RecyclerView.ViewHolder {
@@ -27,8 +27,8 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
         }
     }
 
-    public TeacherAdapater( ArrayList<Teacher> teacherList) {
-        mTeacherList = teacherList;
+    public TeacherAdapater( ArrayList<Professor> professorList) {
+        mProfessorList = professorList;
     }
 
         @Override
@@ -40,7 +40,7 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
 
         @Override
     public void onBindViewHolder( teacherItemViewHolder holder, int position) {
-            String string = (position+1) + ": " + mTeacherList.get(position).getName();
+            String string = (position+1) + ": " + mProfessorList.get(position).getName();
             holder.mTeacherNameButton.setText(string);
             holder.mTeacherNameButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -57,7 +57,7 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
 
     @Override
     public int getItemCount() {
-        return mTeacherList.size();
+        return mProfessorList.size();
     }
 
 

@@ -1,23 +1,37 @@
-package com.partiufast.profedex;
+package com.partiufast.profedex.data;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 import java.util.List;
 
-public class Teacher {
+public class Professor {
+
+    @SerializedName("professor_name")
     private String mName;
+    @SerializedName("professor_description")
     private String mDescription;
-    private String mProfessorRoom; //sala do professor
-    private List<String> mClassesList; //aulas que o professor dá
+    @SerializedName("professor_room")
+    private String mProfessorRoom;
+    @SerializedName("professor_email")
+    private String mProfessorEmail;
+    @SerializedName("class_list")
+    private List<String> mClassesList =  new ArrayList<String>();
+    @SerializedName("didactic_level")
     private int mDidacticLevel;
+    @SerializedName("difficulty_level")
     private int mDifficultyLevel;
 
-    public Teacher(String name, String description, String professorRoom, List<String> classesList, int didacticLevel, int difficultyLevel) {
+    /*
+    public Professor(String name, String description, String professorRoom, String professorEmail, List<String> classesList, int didacticLevel, int difficultyLevel) {
         mName = name;
         mDescription = description;
         mProfessorRoom = professorRoom;
+        mProfessorEmail = professorEmail;
         mClassesList = classesList;
         mDidacticLevel = didacticLevel;
         mDifficultyLevel = difficultyLevel;
-    }
+    }*/
 
     public int getDifficultyLevel() {
         return mDifficultyLevel;
@@ -65,5 +79,13 @@ public class Teacher {
 
     public void setDidacticLevel(int didacticLevel) {
         mDidacticLevel = didacticLevel;
+    }
+
+    public String getProfessorEmail() {
+        return mProfessorEmail;
+    }
+
+    public void setProfessorEmail(String mProfessorEmail) {
+        this.mProfessorEmail = mProfessorEmail;
     }
 }

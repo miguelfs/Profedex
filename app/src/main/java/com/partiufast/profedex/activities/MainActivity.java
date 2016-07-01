@@ -1,18 +1,13 @@
 package com.partiufast.profedex.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -20,18 +15,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.partiufast.profedex.DividerItemDecoration;
 import com.partiufast.profedex.R;
-import com.partiufast.profedex.Teacher;
-import com.partiufast.profedex.TeacherAdapater;
 import com.partiufast.profedex.fragments.ProfileFragment;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
 import com.partiufast.profedex.fragments.TeacherListFragment;
 import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity
@@ -42,6 +32,7 @@ public class MainActivity extends AppCompatActivity
         ProfileFragment.OnLogoutClickedListener {
 
     static final int LOGIN_REQUEST = 0;
+    static final int CHANGE_CENTER = 1;
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
@@ -172,7 +163,7 @@ public class MainActivity extends AppCompatActivity
         }
         if (id == R.id.select_campus){
             Intent intent = new Intent(MainActivity.this, CentroActivity.class);
-            startActivityForResult(intent, 0);
+            startActivityForResult(intent, CHANGE_CENTER);
             return true;
         }
         item.setChecked(true);
@@ -240,6 +231,11 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 loggedUser();
             }
+        }
+        else if (requestCode == CHANGE_CENTER) {
+            /**
+             * Do something with the result
+             */
         }
     }
     /*
