@@ -43,6 +43,7 @@ public class TeacherListFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Professor> mProfessorList = new ArrayList<>();
+    private Professor mAddedProfessor;
     private TeacherAdapater mTeacherAdapater;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -121,12 +122,14 @@ public class TeacherListFragment extends Fragment {
                 Log.e(TAG, t.toString());
             }
         });
-        /*
-        for(int index = 0; index < 150; index++){
-            mProfessorList.add(new Professor("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216",
+
+        for(int index = 0; index < 3; index++)
+            addTeacherToList(new Professor("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
                     Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
-            mTeacherAdapater.notifyDataSetChanged();
-        }*/
+
+        if (mAddedProfessor != null)
+            addTeacherToList(mAddedProfessor);
+
         return rootView;
     }
 
@@ -163,7 +166,6 @@ public class TeacherListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -177,5 +179,14 @@ public class TeacherListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteractionTeacher(Uri uri);
+    }
+
+    public void addTeacherToList(Professor professor){
+        mProfessorList.add(professor);
+        mTeacherAdapater.notifyDataSetChanged();
+    }
+
+    public void setNewTeacherToList(Professor professor) {
+        mAddedProfessor = professor;
     }
 }

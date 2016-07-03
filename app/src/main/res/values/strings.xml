@@ -46,4 +46,7 @@
     <string name="add_teacher_label">Adicionar Professor</string>
     <string name="teacher_name_hint">Nome do professor</string>
     <string name="description_hint">Descrição</string>
+    <string name="teacher_room_hint">Sala do professor</string>
+    <string name="teacher_email_hint">email do professor</string>
+    <string name="walter_white">Walter White</string>
 </resources>

@@ -2,10 +2,11 @@ package com.partiufast.profedex.data;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor {
+public class Professor implements Serializable{
 
     @SerializedName("professor_name")
     private String mName;
@@ -22,7 +23,7 @@ public class Professor {
     @SerializedName("difficulty_level")
     private int mDifficultyLevel;
 
-    /*
+
     public Professor(String name, String description, String professorRoom, String professorEmail, List<String> classesList, int didacticLevel, int difficultyLevel) {
         mName = name;
         mDescription = description;
@@ -31,7 +32,7 @@ public class Professor {
         mClassesList = classesList;
         mDidacticLevel = didacticLevel;
         mDifficultyLevel = difficultyLevel;
-    }*/
+    }
 
     public int getDifficultyLevel() {
         return mDifficultyLevel;

@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -14,8 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.fragments.ProfileFragment;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
 import com.partiufast.profedex.fragments.TeacherListFragment;
@@ -72,7 +75,8 @@ public class MainActivity extends AppCompatActivity
         mDrawerToggle.syncState();
 
         mNavDrawer = (NavigationView) findViewById(R.id.nav_view);
-        mNavDrawer.setNavigationItemSelectedListener(this);
+        if (mNavDrawer != null)
+            mNavDrawer.setNavigationItemSelectedListener(this);
 
         mProfileFragment = new ProfileFragment();
         mTeacherFragment = new TeacherListFragment();
@@ -95,6 +99,12 @@ public class MainActivity extends AppCompatActivity
         // Start with teacher list
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).commit();
+
+        Intent i = getIntent();
+        Professor mProfessor = (Professor) i.getSerializableExtra(AddTeacherActivity.NEW_TEACHER_DATA_INTENT);
+        if (mProfessor != null){
+            mTeacherFragment.setNewTeacherToList(mProfessor);
+        }
     }
 
     private void logoutUser() {

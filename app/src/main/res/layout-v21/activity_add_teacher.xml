@@ -15,47 +15,82 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <EditText
-        android:id="@+id/name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/teacher_name_hint"
-        android:imeActionId="@+id/name"
-        android:imeActionLabel="@string/add_teacher_label"
-        android:imeOptions="actionUnspecified"
-        android:maxLines="1"
-        android:singleLine="true"/>
-</android.support.design.widget.TextInputLayout>
+            <EditText
+                android:id="@+id/teacher_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/teacher_name_hint"
+                android:imeActionId="@+id/name"
+                android:imeActionLabel="@string/add_teacher_label"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:singleLine="true"/>
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-        <EditText
-        android:id="@+id/input_description"
-        android:hint="@string/description_hint"
-        android:inputType="textMultiLine"
-        android:lines="4"
-        android:gravity="top|start"
-        android:maxLines="6"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:scrollbars="vertical"
-        />
+            <EditText
+                android:id="@+id/input_description"
+                android:hint="@string/description_hint"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:gravity="top|start"
+                android:maxLines="6"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:scrollbars="vertical"
+                />
         </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_layout_room"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/room_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/teacher_room_hint"
+                android:imeActionId="@+id/room_edit_text"
+                android:imeActionLabel="@string/teacher_room_hint"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:singleLine="true"/>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_teacher_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/input_teacher_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/teacher_email_hint"
+                android:imeActionId="@+id/teacher_email_hint"
+                android:imeActionLabel="@string/teacher_email_hint"
+                android:imeOptions="actionUnspecified"
+                android:maxLines="1"
+                android:singleLine="true"/>
+        </android.support.design.widget.TextInputLayout>
+
 
         <Button
             style="button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_teacher_label"
-            android:id="@+id/button"
+            android:id="@+id/finish_adding_teacher_button"
             android:layout_marginTop="16dp"
             android:textColor="#ffffff"
             android:backgroundTint="#d50000"/>
