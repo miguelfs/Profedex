@@ -6,8 +6,10 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Professor implements Serializable{
+public class Professor implements Serializable {
 
+    @SerializedName("professor_id")
+    private int mID;
     @SerializedName("professor_name")
     private String mName;
     @SerializedName("professor_description")
@@ -24,7 +26,8 @@ public class Professor implements Serializable{
     private int mDifficultyLevel;
 
 
-    public Professor(String name, String description, String professorRoom, String professorEmail, List<String> classesList, int didacticLevel, int difficultyLevel) {
+    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList, int didacticLevel, int difficultyLevel) {
+        mID = id;
         mName = name;
         mDescription = description;
         mProfessorRoom = professorRoom;

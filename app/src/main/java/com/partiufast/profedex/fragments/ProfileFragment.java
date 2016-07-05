@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.partiufast.profedex.R;
 import com.partiufast.profedex.activities.MainActivity;
+import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
 
@@ -84,12 +85,8 @@ public class ProfileFragment extends Fragment {
         txtName = (TextView) rootView.findViewById(R.id.name);
         txtEmail = (TextView) rootView.findViewById(R.id.email);
         btnLoginout = (Button) rootView.findViewById(R.id.btnLogout);
-        MainActivity activity = (MainActivity) getActivity();
-        mLogged = activity.logged();
-        String name = activity.mName;
-        String email = activity.mEmail;
-        txtName.setText(name);
-        txtEmail.setText(email);
+
+        updateUserInfo();
         btnLoginout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,12 +148,20 @@ public class ProfileFragment extends Fragment {
     TODO: Create a class User
      */
     public void setUserInfo(String name, String email, boolean logged){
-        txtName.setText(name);
-        txtEmail.setText(email);
-        mLogged = logged;
-        if(logged)
-            btnLoginout.setText(R.string.btn_logout);
-        else
-            btnLoginout.setText(R.string.btn_login);
+        if (txtEmail != null && txtName != null) {
+            txtName.setText(name);
+            txtEmail.setText(email);
+            mLogged = logged;
+            if(logged)
+                btnLoginout.setText(R.string.btn_logout);
+            else
+                btnLoginout.setText(R.string.btn_login);
+        }
+    }
+
+    public void updateUserInfo() {
+        setUserInfo(AppController.getInstance().user.getName(),
+                AppController.getInstance().user.getEmail(),
+                !AppController.getInstance().user.isError());
     }
 }

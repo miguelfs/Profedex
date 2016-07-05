@@ -18,7 +18,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.data.Professor;
+import com.partiufast.profedex.data.User;
 import com.partiufast.profedex.fragments.ProfileFragment;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
 import com.partiufast.profedex.fragments.TeacherListFragment;
@@ -110,22 +112,29 @@ public class MainActivity extends AppCompatActivity
     private void logoutUser() {
         session.setLogin(false);
         db.deleteUsers();
-        //mProfileFragment.setUserInfo(getResources().getString(R.string.not_logged), "");
+        AppController.getInstance().user = new User();
+        mProfileFragment.updateUserInfo();
     }
 
     private void loginUser(){
         // Launching the login activity
         Intent intent = new Intent(MainActivity.this, LoginActivity.class);
         startActivityForResult(intent,LOGIN_REQUEST);
-        //finish();
-        //mProfileFragment.setLogin(true);
+        mProfileFragment.updateUserInfo();
     }
 
     public void loggedUser(){
+        /*
         HashMap<String, String> user = db.getUserDetails();
         mName = user.get("name");
-        mEmail = user.get("email");
-        mProfileFragment.setUserInfo(mName, mEmail, true);
+        mEmail = user.get("email");*/
+        if (AppController.getInstance().user.isError() == false) {
+            mProfileFragment.updateUserInfo();
+            session.setLogin(true);
+        }
+        else {
+            mProfileFragment.setUserInfo("", "", false);
+        }
     }
 
     public boolean logged() {
@@ -263,7 +272,6 @@ public class MainActivity extends AppCompatActivity
             loginUser();
         } else {
             logoutUser();
-            mProfileFragment.setUserInfo("Faça Login", "", false);
         }
     }
 

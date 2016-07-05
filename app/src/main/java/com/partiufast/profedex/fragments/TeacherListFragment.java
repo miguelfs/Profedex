@@ -102,6 +102,9 @@ public class TeacherListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapater);
 
+        /**
+         * Here I get the data from server
+         */
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
@@ -123,8 +126,11 @@ public class TeacherListFragment extends Fragment {
             }
         });
 
+        /**
+         * Just to debug
+         */
         for(int index = 0; index < 3; index++)
-            addTeacherToList(new Professor("Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
+            addTeacherToList(new Professor(index, "Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
                     Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
 
         if (mAddedProfessor != null)
