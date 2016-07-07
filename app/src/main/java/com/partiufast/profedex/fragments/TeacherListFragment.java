@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.partiufast.profedex.DividerItemDecoration;
+import com.partiufast.profedex.EndlessRecyclerViewScrollListener;
 import com.partiufast.profedex.R;
 import com.partiufast.profedex.api.ApiInterface;
 import com.partiufast.profedex.api.ApiClient;
@@ -41,7 +42,7 @@ public class TeacherListFragment extends Fragment {
     private static final String TAG = TeacherListFragment.class.getSimpleName();
 
     private RecyclerView mRecyclerView;
-    private RecyclerView.LayoutManager mLayoutManager;
+    private LinearLayoutManager mLayoutManager; //RecyclerView.LayoutManager
     private ArrayList<Professor> mProfessorList = new ArrayList<>();
     private Professor mAddedProfessor;
     private TeacherAdapater mTeacherAdapater;
@@ -101,6 +102,16 @@ public class TeacherListFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapater);
+
+
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                Log.d(TAG, "test");
+            }
+        });
 
         /**
          * Here I get the data from server
