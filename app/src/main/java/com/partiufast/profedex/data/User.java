@@ -7,14 +7,7 @@ import java.io.Serializable;
 /**
  * Created by lgos on 30/06/16.
  */
-public class User implements Serializable {
-
-    @SerializedName("error")
-    boolean error;
-
-    @SerializedName("message")
-    int mMessage;
-
+public class User extends Message implements Serializable {
     @SerializedName("user_id")
     int mId;
 
@@ -30,7 +23,9 @@ public class User implements Serializable {
     @SerializedName("created_at")
     String mCreatedAt;
 
-    public User(int id, String name, String email, String apiKey, String createdAt ) {
+    public User(boolean error, String message, int id, String name, String email, String apiKey, String createdAt)
+    {
+        super(error, message);
         this.mId = id;
         this.mName = name;
         this.mEmail = email;
@@ -39,6 +34,7 @@ public class User implements Serializable {
     }
 
     public User(User user) {
+        super(user.isError(), user.getMessage());
         this.error = user.isError();
         this.mId = user.getId() ;
         this.mName = user.getName();
@@ -48,22 +44,7 @@ public class User implements Serializable {
     }
 
     public User() {
-        this.error = true;
-    }
-    public boolean isError() {
-        return error;
-    }
-
-    public void setError(boolean error) {
-        this.error = error;
-    }
-
-    public int getMessage() {
-        return mMessage;
-    }
-
-    public void setMessage(int mMessage) {
-        this.mMessage = mMessage;
+        super(true, "");
     }
 
     public int getId() {
