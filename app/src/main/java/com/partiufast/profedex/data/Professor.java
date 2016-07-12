@@ -37,6 +37,8 @@ public class Professor implements Serializable {
         mDifficultyLevel = difficultyLevel;
     }
 
+    public  int getID() { return mID; };
+
     public int getDifficultyLevel() {
         return mDifficultyLevel;
     }

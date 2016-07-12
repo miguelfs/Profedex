@@ -17,7 +17,10 @@ import retrofit2.http.Query;
  */
 public interface ApiInterface {
     @GET("/professors")
-    Call<ProfessorResponse> getProfessors();
+    Call<ProfessorResponse> getProfessors(@Query("sort_by") String sort,
+                                          @Query("order") String order,
+                                          @Query("start") int start,
+                                          @Query("limit") int limit);
 
     @FormUrlEncoded
     @POST("/login")

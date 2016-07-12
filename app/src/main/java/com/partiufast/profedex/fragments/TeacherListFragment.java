@@ -40,7 +40,6 @@ import retrofit2.Response;
 public class TeacherListFragment extends Fragment {
 
     private static final String TAG = TeacherListFragment.class.getSimpleName();
-
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLayoutManager; //RecyclerView.LayoutManager
     private ArrayList<Professor> mProfessorList = new ArrayList<>();
@@ -103,23 +102,13 @@ public class TeacherListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapater);
 
-
-        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount) {
-                // Triggered only when new data needs to be appended to the list
-                // Add whatever code is needed to append new items to the bottom of the list
-                Log.d(TAG, "test");
-            }
-        });
-
         /**
          * Here I get the data from server
          */
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
 
-        Call<ProfessorResponse> call = apiService.getProfessors();
+        Call<ProfessorResponse> call = apiService.getProfessors("professor_id", "asc", 0, 20);
         call.enqueue(new Callback<ProfessorResponse>() {
             @Override
             public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
@@ -134,6 +123,35 @@ public class TeacherListFragment extends Fragment {
             public void onFailure(Call<ProfessorResponse>call, Throwable t) {
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
+            }
+        });
+
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                ApiInterface apiService =
+                        ApiClient.getClient().create(ApiInterface.class);
+
+                Call<ProfessorResponse> call = apiService.getProfessors("professor_id", "asc", (page+1)*10 , 10);
+                Log.d(TAG, "Got from " + (page+1)*10 + "to" + ((page+2)*10));
+                call.enqueue(new Callback<ProfessorResponse>() {
+                    @Override
+                    public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
+                        List<Professor> professors = response.body().getProfessors();
+                        Log.d(TAG, "Number of professors received: " + professors.size());
+                        mProfessorList.addAll(professors);
+                        mTeacherAdapater.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<ProfessorResponse>call, Throwable t) {
+                        // Log error here since request failed
+                        Log.e(TAG, t.toString());
+                    }
+                });
+
             }
         });
 

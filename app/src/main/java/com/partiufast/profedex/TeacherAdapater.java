@@ -40,7 +40,7 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
 
         @Override
     public void onBindViewHolder( teacherItemViewHolder holder, int position) {
-            String string = (position+1) + ": " + mProfessorList.get(position).getName();
+            String string =  mProfessorList.get(position).getID() + ": " + mProfessorList.get(position).getName();
             holder.mTeacherNameButton.setText(string);
             holder.mTeacherNameButton.setOnClickListener(new View.OnClickListener() {
                 @Override
