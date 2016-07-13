@@ -13,7 +13,7 @@ import com.partiufast.profedex.fragments.TeacherInfoFragment;
 
 import java.util.ArrayList;
 
-public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teacherItemViewHolder> {
+public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherItemViewHolder> {
     ArrayList<Professor> mProfessorList;
     Context mContext;
 
@@ -27,7 +27,7 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
         }
     }
 
-    public TeacherAdapater( ArrayList<Professor> professorList) {
+    public TeacherAdapter(ArrayList<Professor> professorList) {
         mProfessorList = professorList;
     }
 
@@ -39,13 +39,14 @@ public class TeacherAdapater extends RecyclerView.Adapter<TeacherAdapater.teache
 
 
         @Override
-    public void onBindViewHolder( teacherItemViewHolder holder, int position) {
+    public void onBindViewHolder(teacherItemViewHolder holder, final int position) {
             String string =  mProfessorList.get(position).getID() + ": " + mProfessorList.get(position).getName();
+            final Professor p = mProfessorList.get(position);
             holder.mTeacherNameButton.setText(string);
             holder.mTeacherNameButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    TeacherInfoFragment mTeacherInfoFragment = new TeacherInfoFragment();
+                    TeacherInfoFragment mTeacherInfoFragment = TeacherInfoFragment.newInstance(p);
                     ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction()
                             .setCustomAnimations(R.anim.slide_in_right, 0, R.anim.slide_in_right, 0 )
                             .replace(R.id.flContent, mTeacherInfoFragment )

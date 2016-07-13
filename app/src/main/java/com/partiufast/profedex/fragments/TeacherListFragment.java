@@ -17,7 +17,7 @@ import com.partiufast.profedex.R;
 import com.partiufast.profedex.api.ApiInterface;
 import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.data.Professor;
-import com.partiufast.profedex.TeacherAdapater;
+import com.partiufast.profedex.TeacherAdapter;
 import com.partiufast.profedex.data.ProfessorResponse;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class TeacherListFragment extends Fragment {
     private LinearLayoutManager mLayoutManager; //RecyclerView.LayoutManager
     private ArrayList<Professor> mProfessorList = new ArrayList<>();
     private Professor mAddedProfessor;
-    private TeacherAdapater mTeacherAdapater;
+    private TeacherAdapter mTeacherAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,11 +96,11 @@ public class TeacherListFragment extends Fragment {
         View rootView =  inflater.inflate(R.layout.fragment_teachers, container, false);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.teacherRecyclerView);
-        mTeacherAdapater = new TeacherAdapater(mProfessorList);
+        mTeacherAdapter = new TeacherAdapter(mProfessorList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
-        mRecyclerView.setAdapter(mTeacherAdapater);
+        mRecyclerView.setAdapter(mTeacherAdapter);
 
         /**
          * Here I get the data from server
@@ -116,7 +116,7 @@ public class TeacherListFragment extends Fragment {
                 Log.d(TAG, "Number of professors received: " + professors.size());
                 mProfessorList.clear();
                 mProfessorList.addAll(professors);
-                mTeacherAdapater.notifyDataSetChanged();
+                mTeacherAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -142,7 +142,7 @@ public class TeacherListFragment extends Fragment {
                         List<Professor> professors = response.body().getProfessors();
                         Log.d(TAG, "Number of professors received: " + professors.size());
                         mProfessorList.addAll(professors);
-                        mTeacherAdapater.notifyDataSetChanged();
+                        mTeacherAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -218,7 +218,7 @@ public class TeacherListFragment extends Fragment {
 
     public void addTeacherToList(Professor professor){
         mProfessorList.add(professor);
-        mTeacherAdapater.notifyDataSetChanged();
+        mTeacherAdapter.notifyDataSetChanged();
     }
 
     public void setNewTeacherToList(Professor professor) {

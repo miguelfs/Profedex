@@ -7,18 +7,20 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.data.Professor;
 
 public class TeacherInfoFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PROFESSOR = "professor_data";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private Professor professor;
+    private TextView profName;
+    private TextView profDescription;
 
     private OnFragmentInteractionListener mListener;
 
@@ -27,11 +29,10 @@ public class TeacherInfoFragment extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static TeacherInfoFragment newInstance(String param1, String param2) {
+    public static TeacherInfoFragment newInstance(Professor professor) {
         TeacherInfoFragment fragment = new TeacherInfoFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putSerializable(ARG_PROFESSOR, professor);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,8 +41,8 @@ public class TeacherInfoFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            Bundle args = getArguments();
+            professor = (Professor)getArguments().getSerializable(ARG_PROFESSOR);
         }
     }
 
@@ -49,7 +50,12 @@ public class TeacherInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_teacher_info, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_teacher_info, container, false);
+        profName = (TextView) rootView.findViewById(R.id.teacher_name_text_view);
+        profDescription = (TextView) rootView.findViewById(R.id.description_teacher_text_view);
+        profName.setText(professor.getName());
+        profDescription.setText(professor.getDescription());
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
