@@ -102,65 +102,26 @@ public class TeacherListFragment extends Fragment {
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
         mRecyclerView.setAdapter(mTeacherAdapter);
 
-        /**
-         * Here I get the data from server
-         */
-        ApiInterface apiService =
-                ApiClient.getClient().create(ApiInterface.class);
-
-        Call<ProfessorResponse> call = apiService.getProfessors("professor_id", "asc", 0, 20);
-        call.enqueue(new Callback<ProfessorResponse>() {
-            @Override
-            public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
-                List<Professor> professors = response.body().getProfessors();
-                Log.d(TAG, "Number of professors received: " + professors.size());
-                mProfessorList.clear();
-                mProfessorList.addAll(professors);
-                mTeacherAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFailure(Call<ProfessorResponse>call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-            }
-        });
+        mProfessorList.clear();
+        getProfessorData("professor_id", "asc", 0, 20);
 
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(mLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                ApiInterface apiService =
-                        ApiClient.getClient().create(ApiInterface.class);
 
-                Call<ProfessorResponse> call = apiService.getProfessors("professor_id", "asc", (page+1)*10 , 10);
+                getProfessorData("professor_id", "asc", (page+1)*10 , 10);
                 Log.d(TAG, "Got from " + (page+1)*10 + "to" + ((page+2)*10));
-                call.enqueue(new Callback<ProfessorResponse>() {
-                    @Override
-                    public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
-                        List<Professor> professors = response.body().getProfessors();
-                        Log.d(TAG, "Number of professors received: " + professors.size());
-                        mProfessorList.addAll(professors);
-                        mTeacherAdapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(Call<ProfessorResponse>call, Throwable t) {
-                        // Log error here since request failed
-                        Log.e(TAG, t.toString());
-                    }
-                });
-
             }
         });
 
         /**
          * Just to debug
          */
-        for(int index = 0; index < 3; index++)
-            addTeacherToList(new Professor(index, "Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
-                    Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
+//        for(int index = 0; index < 3; index++)
+//            addTeacherToList(new Professor(index, "Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
+//                    Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
 
         if (mAddedProfessor != null)
             addTeacherToList(mAddedProfessor);
@@ -223,5 +184,29 @@ public class TeacherListFragment extends Fragment {
 
     public void setNewTeacherToList(Professor professor) {
         mAddedProfessor = professor;
+    }
+
+    /**
+     * Get professor list from server
+     */
+    private void getProfessorData(String sort, String order, int start, int limit ) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<ProfessorResponse> call = apiService.getProfessors(sort, order, start, limit);
+        call.enqueue(new Callback<ProfessorResponse>() {
+            @Override
+            public void onResponse(Call<ProfessorResponse>call, Response<ProfessorResponse> response) {
+                List<Professor> professors = response.body().getProfessors();
+                Log.d(TAG, "Number of professors received: " + professors.size());
+                mProfessorList.addAll(professors);
+                mTeacherAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<ProfessorResponse>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 }

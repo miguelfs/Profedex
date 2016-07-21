@@ -19,38 +19,23 @@ public class Professor implements Serializable {
     @SerializedName("professor_email")
     private String mProfessorEmail;
     @SerializedName("class_list")
-    private List<String> mClassesList =  new ArrayList<String>();
-    @SerializedName("didactic_level")
-    private int mDidacticLevel;
-    @SerializedName("difficulty_level")
-    private int mDifficultyLevel;
+    private List<String> mClassesList =  new ArrayList<>();
 
-
-    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList, int didacticLevel, int difficultyLevel) {
+    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList) {
         mID = id;
         mName = name;
         mDescription = description;
         mProfessorRoom = professorRoom;
         mProfessorEmail = professorEmail;
         mClassesList = classesList;
-        mDidacticLevel = didacticLevel;
-        mDifficultyLevel = difficultyLevel;
     }
 
     public  int getID() { return mID; };
 
-    public int getDifficultyLevel() {
-        return mDifficultyLevel;
-    }
-
-    public void setDifficultyLevel(int difficultyLevel) {
-        mDifficultyLevel = difficultyLevel;
-    }
-
     public String getName() {
         return mName;
     }
-///
+
     public void setName(String name) {
         mName = name;
     }
@@ -77,14 +62,6 @@ public class Professor implements Serializable {
 
     public void setClassesList(List<String> classesList) {
         mClassesList = classesList;
-    }
-
-    public int getDidacticLevel() {
-        return mDidacticLevel;
-    }
-
-    public void setDidacticLevel(int didacticLevel) {
-        mDidacticLevel = didacticLevel;
     }
 
     public String getProfessorEmail() {

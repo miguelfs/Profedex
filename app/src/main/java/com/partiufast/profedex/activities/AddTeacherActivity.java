@@ -34,8 +34,8 @@ public class AddTeacherActivity extends AppCompatActivity {
         mAddTeacherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mProfessor = new Professor(1, mTeacherName.getText().toString(), mTeacherDescription.getText().toString(), mTeacherRoom.getText().toString(),
-                        mTeacherEmail.getText().toString(),  Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"), 8, 8);
+//                mProfessor = new Professor(1, mTeacherName.getText().toString(), mTeacherDescription.getText().toString(), mTeacherRoom.getText().toString(),
+//                        mTeacherEmail.getText().toString(),  Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"), 8, 8);
                 Intent intent = new Intent(AddTeacherActivity.this, MainActivity.class);
                 intent.putExtra(NEW_TEACHER_DATA_INTENT, mProfessor);
                 startActivity(intent);

@@ -1,5 +1,6 @@
 package com.partiufast.profedex.api;
 
+import com.partiufast.profedex.data.CommentResponse;
 import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.ProfessorResponse;
 import com.partiufast.profedex.data.User;
@@ -16,11 +17,14 @@ import retrofit2.http.Query;
  * Created by lgos on 30/06/16.
  */
 public interface ApiInterface {
-    @GET("/professors")
+    @GET("/professor")
     Call<ProfessorResponse> getProfessors(@Query("sort_by") String sort,
                                           @Query("order") String order,
                                           @Query("start") int start,
                                           @Query("limit") int limit);
+
+    @GET("/professor/{id}/comment")
+    Call<CommentResponse> getComments(@Path("id") int professorID);
 
     @FormUrlEncoded
     @POST("/login")
