@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -28,6 +29,7 @@ import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -38,6 +40,9 @@ public class MainActivity extends AppCompatActivity
 
     static final int LOGIN_REQUEST = 0;
     static final int CHANGE_CENTER = 1;
+    static final String profileTag = "PROFILE_FRAGMENT";
+    static final String professorListTag = "TEACHER_LIST_FRAGMENT";
+    static final String professorInfoTag = "PROFESSOR_INFO_FRAGMENT";
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
@@ -48,6 +53,7 @@ public class MainActivity extends AppCompatActivity
 
     private ProfileFragment mProfileFragment;
     private TeacherListFragment mTeacherFragment;
+    private FloatingActionButton mFloatingButton;
 
     public String mName;
     public String mEmail;
@@ -59,13 +65,12 @@ public class MainActivity extends AppCompatActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
+        mFloatingButton = (FloatingActionButton) findViewById(R.id.fab);
+        if (mFloatingButton != null) {
+            mFloatingButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
-                    startActivity(intent);
+                    onFloatingButtonClick();
                 }
             });
         }
@@ -101,6 +106,20 @@ public class MainActivity extends AppCompatActivity
         // Start with teacher list
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).commit();
+        // Show fab only on list fragment
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentManager.BackStackEntry bk = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1);
+                String name = bk.getName();
+                Fragment fragment = fragmentManager.findFragmentByTag(name);
+                if (fragment instanceof TeacherListFragment)
+                    mFloatingButton.show();
+                else
+                    mFloatingButton.hide();
+            }
+        });
 
         Intent i = getIntent();
         Professor mProfessor = (Professor) i.getSerializableExtra(AddTeacherActivity.NEW_TEACHER_DATA_INTENT);
@@ -189,12 +208,14 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_camera:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment)
+                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment, profileTag)
                         .addToBackStack("fragment").commit();
+                mFloatingButton.hide();
                 break;
             case R.id.nav_gallery:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment)
+                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment, professorListTag)
                         .addToBackStack("fragment").commit();
+                mFloatingButton.show();
                 break;
             case R.id.nav_slideshow:
                 break;
@@ -205,7 +226,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_send:
                 break;
             default:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment)
+                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment, profileTag)
                         .addToBackStack("fragment").commit();
         }
 
@@ -272,6 +293,25 @@ public class MainActivity extends AppCompatActivity
             logoutUser();
         }
     }
+    public void onFloatingButtonClick() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        List<Fragment> fragments = fragmentManager.getFragments();
 
+        if (fragments != null) {
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment.isVisible()) {
+                    if (fragment instanceof TeacherInfoFragment) {
+                        ((TeacherInfoFragment) fragment).sendCommentData();
+                        break;
+                    }
+                    if (fragment instanceof TeacherListFragment) {
+                        Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
+                        startActivity(intent);
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
 }

@@ -1,20 +1,32 @@
 package com.partiufast.profedex.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.api.ApiClient;
+import com.partiufast.profedex.api.ApiInterface;
+import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.Professor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class AddTeacherActivity extends AppCompatActivity {
+    private static final String TAG = RegisterActivity.class.getSimpleName();
     private EditText mTeacherName, mTeacherDescription, mTeacherRoom, mTeacherEmail;
     private Button mAddTeacherButton;
     private Professor mProfessor;
@@ -34,11 +46,10 @@ public class AddTeacherActivity extends AppCompatActivity {
         mAddTeacherButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                mProfessor = new Professor(1, mTeacherName.getText().toString(), mTeacherDescription.getText().toString(), mTeacherRoom.getText().toString(),
-//                        mTeacherEmail.getText().toString(),  Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"), 8, 8);
-                Intent intent = new Intent(AddTeacherActivity.this, MainActivity.class);
-                intent.putExtra(NEW_TEACHER_DATA_INTENT, mProfessor);
-                startActivity(intent);
+                sendProfessorData();
+                //Intent intent = new Intent(AddTeacherActivity.this, MainActivity.class);
+                //intent.putExtra(NEW_TEACHER_DATA_INTENT, mProfessor);
+                //startActivity(intent);
                 finish();
             }
         });
@@ -56,5 +67,39 @@ public class AddTeacherActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public Activity getInstance() {return this;}
+
+    private void sendProfessorData() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+
+        Call<Message> call = apiService.createProfessor(mTeacherName.getText().toString(),
+                mTeacherEmail.getText().toString(),
+                mTeacherDescription.getText().toString(),
+                mTeacherRoom.getText().toString());
+
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message>call, Response<Message> response) {
+                if (response.body() != null) {
+                    if (response.body().isError()) {
+                        Toast.makeText(getInstance(), response.body().getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getInstance(), "Professor added.",
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "OK");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Message>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 }

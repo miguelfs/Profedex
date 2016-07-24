@@ -11,10 +11,13 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.partiufast.profedex.CommentAdapter;
 import com.partiufast.profedex.R;
@@ -47,6 +50,8 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     private Professor professor;
     private TextView profName;
     private TextView profDescription;
+    private Button commentButton;
+    private EditText commentEditText;
     ArrayList<Comment> comments = new ArrayList<>();
     ArrayList<Rating> ratings = new ArrayList<>();
     CommentAdapter adapter;
@@ -88,6 +93,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         profName.setText(professor.getName());
         profDescription.setText(professor.getDescription());
 
+        // Comment List
         RecyclerView rv = (RecyclerView)rootView.findViewById(R.id.comments);
         LinearLayoutManager llm = new LinearLayoutManager(rootView.getContext());
         rv.setLayoutManager(llm);
@@ -95,7 +101,18 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         adapter = new CommentAdapter(comments);
         rv.setAdapter(adapter);
 
+        commentButton = (Button) rootView.findViewById(R.id.comment_button);
+        commentEditText = (EditText) rootView.findViewById(R.id.comment_edit_text);
+        commentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendCommentData();
+            }
+        });
+        // Ratings
         getRatingData();
+
+
         return rootView;
     }
 
@@ -205,6 +222,35 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
     }
 
-
+    public void sendCommentData() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<Message> call = apiService.createComment(professor.getID(), AppController.getInstance().user.getId(), commentEditText.getText().toString());
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message>call, Response<Message> response) {
+                if (response.body() != null) {
+                    if (response.body().isError()) {
+                        Toast.makeText(getActivity(), response.body().getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Comment posted.",
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "OK");
+                    }
+                }
+                else {
+                    Toast.makeText(getActivity(), "Connection error.",
+                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "ERROR");
+                }
+            }
+            @Override
+            public void onFailure(Call<Message>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
 
 }
