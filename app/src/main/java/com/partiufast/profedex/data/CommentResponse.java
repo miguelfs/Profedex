@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by lgos on 20/07/16.
+ * This class is only used to de-serialize JSON
  */
 public class CommentResponse {
     @SerializedName("comments")

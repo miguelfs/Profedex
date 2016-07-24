@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 
 import com.partiufast.profedex.DividerItemDecoration;
 import com.partiufast.profedex.EndlessRecyclerViewScrollListener;
@@ -110,7 +111,6 @@ public class TeacherListFragment extends Fragment {
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-
                 getProfessorData("professor_id", "asc", (page+1)*10 , 10);
                 Log.d(TAG, "Got from " + (page+1)*10 + "to" + ((page+2)*10));
             }

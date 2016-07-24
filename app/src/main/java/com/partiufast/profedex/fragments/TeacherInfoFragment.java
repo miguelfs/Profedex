@@ -7,19 +7,28 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.partiufast.profedex.CommentAdapter;
 import com.partiufast.profedex.R;
 import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.api.ApiInterface;
+import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.data.Comment;
 import com.partiufast.profedex.data.CommentResponse;
+import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.data.ProfessorResponse;
+import com.partiufast.profedex.data.Rating;
+import com.partiufast.profedex.data.RatingResponse;
+import com.partiufast.profedex.views.RatingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeacherInfoFragment extends Fragment {
+public class TeacherInfoFragment extends Fragment implements RatingView.OnRatingSend{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PROFESSOR = "professor_data";
@@ -39,9 +48,14 @@ public class TeacherInfoFragment extends Fragment {
     private TextView profName;
     private TextView profDescription;
     ArrayList<Comment> comments = new ArrayList<>();
+    ArrayList<Rating> ratings = new ArrayList<>();
     CommentAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
+
+    public TeacherInfoFragment getInstance() {
+        return this;
+    }
 
     public TeacherInfoFragment() {
         // Required empty public constructor
@@ -78,13 +92,10 @@ public class TeacherInfoFragment extends Fragment {
         LinearLayoutManager llm = new LinearLayoutManager(rootView.getContext());
         rv.setLayoutManager(llm);
         getCommentData();
-        //comments.add(new Comment(1,1,"asdfasdfasdfasdfasdf"));
-        //comments.add(new Comment(2,2,"asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"));
-        //comments.add(new Comment(3,3,"asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"));
-        //comments.add(new Comment(4,4,"asdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdf"));
         adapter = new CommentAdapter(comments);
         rv.setAdapter(adapter);
 
+        getRatingData();
         return rootView;
     }
 
@@ -123,9 +134,9 @@ public class TeacherInfoFragment extends Fragment {
         call.enqueue(new Callback<CommentResponse>() {
             @Override
             public void onResponse(Call<CommentResponse>call, Response<CommentResponse> response) {
-                List<Comment> commenta = response.body().getComments();
-                Log.d(TAG, "Number of professors received: " + commenta.size());
-                comments.addAll(commenta);
+                List<Comment> comment = response.body().getComments();
+                Log.d(TAG, "Number of professors received: " + comment.size());
+                comments.addAll(comment);
                 adapter.notifyDataSetChanged();
             }
 
@@ -136,4 +147,64 @@ public class TeacherInfoFragment extends Fragment {
             }
         });
     }
+
+    private void getRatingData() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<RatingResponse> call = apiService.getRatings(professor.getID());
+        call.enqueue(new Callback<RatingResponse>() {
+            @Override
+            public void onResponse(Call<RatingResponse>call, Response<RatingResponse> response) {
+                if (response.body() != null) {
+                    List<Rating> rating = response.body().getRatings();
+                    Log.d(TAG, "Number of ratings received: " + rating.size());
+                    ratings.addAll(rating);
+                    for (Rating r : ratings) {
+                        RatingView rv = new RatingView(getActivity(), r);
+                        rv.setOnRatingSend(getInstance());
+                        LinearLayout linearLayout = (LinearLayout)  getView().findViewById(R.id.rating_layout);
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        params.gravity = Gravity.CENTER_HORIZONTAL;
+                        linearLayout.addView(rv);
+                        //linearLayout.setLayoutParams(params);
+                        linearLayout.setGravity(Gravity.CENTER_HORIZONTAL);
+                        rv.setGravity(Gravity.CENTER_HORIZONTAL);
+                    }
+                }
+                else {
+                    Log.d(TAG, "ERROR");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RatingResponse>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+    public void sendRatingData(Rating rating) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Log.d(TAG, "Rating " + rating.getUserRating());
+        Call<Message> call = apiService.createRating(professor.getID(), AppController.getInstance().user.getId(), rating.getRatingTypeID(), rating.getUserRating());
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message>call, Response<Message> response) {
+                if (response.body() != null) {
+                    Log.d(TAG, "OK");
+                }
+                else {
+                    Log.d(TAG, "ERROR");
+                }
+            }
+            @Override
+            public void onFailure(Call<Message>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
+
+
+
 }

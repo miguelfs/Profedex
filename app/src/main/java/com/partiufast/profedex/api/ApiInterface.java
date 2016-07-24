@@ -3,6 +3,7 @@ package com.partiufast.profedex.api;
 import com.partiufast.profedex.data.CommentResponse;
 import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.ProfessorResponse;
+import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.data.User;
 
 import retrofit2.Call;
@@ -22,9 +23,31 @@ public interface ApiInterface {
                                           @Query("order") String order,
                                           @Query("start") int start,
                                           @Query("limit") int limit);
+    @FormUrlEncoded
+    @POST("/professor")
+    Call<Message> createProfessor(@Field("name") String name,
+                                  @Field("email") String email,
+                                  @Field("description") String description,
+                                  @Field("room") String room);
 
     @GET("/professor/{id}/comment")
     Call<CommentResponse> getComments(@Path("id") int professorID);
+
+    @FormUrlEncoded
+    @POST("/professor/{id}/comment")
+    Call<Message> createComment(@Path("id") int professorID,
+                                @Field("user_id") int userID,
+                                @Field("comment") String comment);
+
+    @GET("/professor/{id}/rating")
+    Call<RatingResponse> getRatings(@Path("id") int professorID);
+
+    @FormUrlEncoded
+    @POST("/professor/{id}/rating")
+    Call<Message> createRating(@Path("id") int professorID,
+                               @Field("user_id") int userID,
+                               @Field("rating_type_id") int ratingType,
+                               @Field("rating_value") float rating);
 
     @FormUrlEncoded
     @POST("/login")

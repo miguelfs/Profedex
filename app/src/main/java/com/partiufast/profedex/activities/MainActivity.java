@@ -141,18 +141,7 @@ public class MainActivity extends AppCompatActivity
         return session.isLoggedIn();
     }
 
-   /* @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }*/
-
-
-    //permite que, ao clicar em voltar, retorne para a fragment anterior na pilha.
+    //When clicking back returns to the last fragment on the stack.
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
@@ -200,10 +189,12 @@ public class MainActivity extends AppCompatActivity
 
         switch(id) {
             case R.id.nav_camera:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment).addToBackStack("fragment").commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment)
+                        .addToBackStack("fragment").commit();
                 break;
             case R.id.nav_gallery:
-                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment).addToBackStack("fragment").commit();
+                fragmentManager.beginTransaction().replace(R.id.flContent, mTeacherFragment)
+                        .addToBackStack("fragment").commit();
                 break;
             case R.id.nav_slideshow:
                 break;
@@ -214,7 +205,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_send:
                 break;
             default:
-                //fragmentClass = ProfileFragment.class;
+                fragmentManager.beginTransaction().replace(R.id.flContent, mProfileFragment)
+                        .addToBackStack("fragment").commit();
         }
 
         //DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -257,6 +249,7 @@ public class MainActivity extends AppCompatActivity
              */
         }
     }
+
     /*
     Fragment Interaction
      */
@@ -267,17 +260,17 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteractionProfile(Uri uri){
         //you can leave it empty
     }
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
+    }
+
     public void onLogoutClicked() {
         if (!session.isLoggedIn()) {
             loginUser();
         } else {
             logoutUser();
         }
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 
 
