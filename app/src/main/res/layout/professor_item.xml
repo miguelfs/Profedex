@@ -9,15 +9,29 @@
         android:padding="8dp">
 
 
+    <FrameLayout
+        android:id="@+id/frame"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="false">
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
-            android:src="@drawable/abc_btn_switch_to_on_mtrl_00001"
-            android:contentDescription="@string/content_description"
-            android:layout_centerVertical="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="false"/>
+            android:id="@+id/pic"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/walter_1" />
+
+        <ImageView
+            android:id="@+id/circle_crop"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/roundedimage" />
+
+
+    </FrameLayout>
+
 
     <Button
         style="@style/Widget.AppCompat.Button.Borderless.Colored"

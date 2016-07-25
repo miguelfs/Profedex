@@ -1,7 +1,12 @@
 package com.partiufast.profedex.data;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.renderscript.ScriptGroup;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +25,17 @@ public class Professor implements Serializable {
     private String mProfessorEmail;
     @SerializedName("class_list")
     private List<String> mClassesList =  new ArrayList<>();
+    @SerializedName("professor_picture_inputstream")
+    private InputStream mProfessorPictureInputStream;
 
-    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList) {
+    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList, InputStream pictureStream) {
         mID = id;
         mName = name;
         mDescription = description;
         mProfessorRoom = professorRoom;
         mProfessorEmail = professorEmail;
         mClassesList = classesList;
+        mProfessorPictureInputStream = pictureStream;
     }
 
     public  int getID() { return mID; };
@@ -70,5 +78,17 @@ public class Professor implements Serializable {
 
     public void setProfessorEmail(String mProfessorEmail) {
         this.mProfessorEmail = mProfessorEmail;
+    }
+
+    public InputStream getProfessorPictureInputStream() {
+        return mProfessorPictureInputStream;
+    }
+
+    public void setProfessorPictureInputStream(InputStream professorPictureInputStream) {
+        mProfessorPictureInputStream = professorPictureInputStream;
+    }
+
+    public Bitmap getBitmapProfessorPicture(){
+        return BitmapFactory.decodeStream(mProfessorPictureInputStream);
     }
 }

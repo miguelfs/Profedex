@@ -6,6 +6,8 @@ import com.partiufast.profedex.data.ProfessorResponse;
 import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.data.User;
 
+import java.io.InputStream;
+
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -28,7 +30,8 @@ public interface ApiInterface {
     Call<Message> createProfessor(@Field("name") String name,
                                   @Field("email") String email,
                                   @Field("description") String description,
-                                  @Field("room") String room);
+                                  @Field("room") String room,
+                                  @Field("picturestream")InputStream pictureStream);
 
     @GET("/professor/{id}/comment")
     Call<CommentResponse> getComments(@Path("id") int professorID);
