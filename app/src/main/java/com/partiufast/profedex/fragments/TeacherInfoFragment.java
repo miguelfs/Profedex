@@ -26,10 +26,12 @@ import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.data.Comment;
 import com.partiufast.profedex.data.CommentResponse;
 import com.partiufast.profedex.data.Message;
+import com.partiufast.profedex.data.PicturePath;
 import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.data.Rating;
 import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.views.RatingView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +48,14 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     // TODO: Rename and change types of parameters
     private Professor professor;
-    private TextView profName;
-    private TextView profDescription;
-    private ImageView profImg;
-    ArrayList<Rating> ratings = new ArrayList<>();
     private Button commentButton;
     private EditText commentEditText;
+    private InfoAdapter.ProfessorViewHolder professorViewHolder;
+    private List<InfoAdapter.CommentViewHolder> commentHolderList;
+    private List<String> pictureURLs;
+
+
+    ArrayList<Rating> ratings = new ArrayList<>();
     ArrayList<Object> comments = new ArrayList<>();
     InfoAdapter adapter;
 
@@ -87,11 +91,6 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_teacher_info, container, false);
-//        profName = (TextView) rootView.findViewById(R.id.teacher_name_text_view);
-//        profDescription = (TextView) rootView.findViewById(R.id.description_teacher_text_view);
-//        profImg = (ImageView) rootView.findViewById(R.id.professor_picture);
-//        profName.setText(professor.getName());
-//        profDescription.setText(professor.getDescription());
 
         // Comment List
         RecyclerView rv = (RecyclerView)rootView.findViewById(R.id.comments);
@@ -103,10 +102,6 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         rv.setAdapter(adapter);
         getCommentData();
 
-        // set header for RecyclerView
-        //RecyclerViewHeader header = (RecyclerViewHeader) rootView.findViewById(R.id.header);
-        //header.attachTo(rv);
-
         commentButton = (Button) rootView.findViewById(R.id.comment_button);
         commentEditText = (EditText) rootView.findViewById(R.id.comment_edit_text);
         commentButton.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +112,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
         // Ratings
         getRatingData();
-
+        getPicturePaths();
         return rootView;
     }
 
@@ -147,6 +142,14 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void setProfessorViewHolder(InfoAdapter.ProfessorViewHolder p) {
+        professorViewHolder = p;
+    }
+
+    public void addCommentViewHolder(InfoAdapter.CommentViewHolder c) {
+        commentHolderList.add(c);
     }
 
     private void getCommentData() {
@@ -208,7 +211,11 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     public void sendRatingData(Rating rating) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Log.d(TAG, "Rating " + rating.getUserRating());
-        Call<Message> call = apiService.createRating(professor.getID(), AppController.getInstance().user.getId(), rating.getRatingTypeID(), rating.getUserRating());
+        Call<Message> call =
+                apiService.createRating( professor.getID(),
+                        AppController.getInstance().user.getId(),
+                        rating.getRatingTypeID(), rating.getUserRating());
+
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message>call, Response<Message> response) {
@@ -229,7 +236,11 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     public void sendCommentData() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<Message> call = apiService.createComment(professor.getID(), AppController.getInstance().user.getId(), commentEditText.getText().toString());
+        Call<Message> call =
+                apiService.createComment(professor.getID(),
+                        AppController.getInstance().user.getId(),
+                        commentEditText.getText().toString());
+
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message>call, Response<Message> response) {
@@ -260,8 +271,10 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     public void sendCommentVote(Comment comment, int value) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<Message> call = apiService
-                .voteComment(professor.getID(), comment.getID(), AppController.getInstance().user.getId(), value);
+        Call<Message> call =
+                apiService.voteComment(professor.getID(),
+                        comment.getID(), AppController.getInstance().user.getId(), value);
+
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message>call, Response<Message> response) {
@@ -271,14 +284,12 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                                 Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(getActivity(), "Voted",
-                                Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Voted", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "OK");
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Connection error.",
-                            Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Connection error.", Toast.LENGTH_LONG).show();
                     Log.d(TAG, "ERROR");
                 }
             }
@@ -288,5 +299,35 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                 Log.e(TAG, t.toString());
             }
         });
+    }
+
+    public void getPicturePaths() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<List<PicturePath>> call = apiService.getPictureList(professor.getID());
+        call.enqueue(new Callback<List<PicturePath>>() {
+            @Override
+            public void onResponse(Call<List<PicturePath>>call, Response<List<PicturePath>> response) {
+                if (response.body() != null) {
+                        for(PicturePath p : response.body()) {
+                            pictureURLs.add(p.getPicturePath());
+                        }
+                        Toast.makeText(getActivity(), response.body().get(0).picturePath, Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "OK");
+                }
+                else {
+                    Toast.makeText(getActivity(), "Connection error.", Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "ERROR PICTURE");
+                }
+            }
+            @Override
+            public void onFailure(Call<List<PicturePath>>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString() + "ERROR PICTURE");
+            }
+        });
+    }
+
+    public void getPictureData() {
+        Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0)).into(professorViewHolder.profImg);
     }
 }

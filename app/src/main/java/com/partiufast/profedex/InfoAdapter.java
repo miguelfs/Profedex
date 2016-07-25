@@ -11,11 +11,8 @@ import android.widget.TextView;
 
 import com.partiufast.profedex.data.Comment;
 import com.partiufast.profedex.data.Professor;
-import com.partiufast.profedex.data.Rating;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
-import com.partiufast.profedex.fragments.TeacherListFragment;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,13 +21,13 @@ import java.util.List;
 public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final int COMMENT = 0, HEADER = 1;
-    private TeacherInfoFragment mfragment;
+    private TeacherInfoFragment mFragment;
 
     public class ProfessorViewHolder extends RecyclerView.ViewHolder {
 
         private TextView profName;
         private TextView profDescription;
-        private ImageView profImg;
+        public ImageView profImg;
 
         public ProfessorViewHolder(View v) {
             super(v);
@@ -67,7 +64,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public InfoAdapter(List<Object> comments, TeacherInfoFragment fragment){
         this.items = comments;
-        this.mfragment = fragment;
+        this.mFragment = fragment;
     }
 
     @Override
@@ -116,6 +113,8 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 ProfessorViewHolder vh = (ProfessorViewHolder)viewHolder;
                 vh.profName.setText(p.getName());
                 vh.profDescription.setText(p.getDescription());
+                mFragment.setProfessorViewHolder(vh);
+                mFragment.getPictureData();
                 break;
             case COMMENT:
                 final Comment c = (Comment)items.get(position);
@@ -123,18 +122,18 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 commentViewHolder.userName.setText(c.getUserName());
                 commentViewHolder.commentText.setText(c.getText());
                 commentViewHolder.commentVote.setText(""+c.getVote());
-
+                //mFragment.addCommentViewHolder(commentViewHolder);
                 commentViewHolder.thumbsUpButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mfragment.sendCommentVote(c,1);
+                        mFragment.sendCommentVote(c,1);
                         commentViewHolder.commentVote.setText(String.valueOf(c.getVote()+1));
                     }
                 });
                 commentViewHolder.thumbsDownButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mfragment.sendCommentVote(c,-1);
+                        mFragment.sendCommentVote(c,-1);
                         commentViewHolder.commentVote.setText(String.valueOf(c.getVote()-1));
                     }
                 });

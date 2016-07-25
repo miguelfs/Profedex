@@ -27,8 +27,9 @@ public class Professor implements Serializable {
     private List<String> mClassesList =  new ArrayList<>();
     @SerializedName("professor_picture_inputstream")
     private InputStream mProfessorPictureInputStream;
+    private List<String> mPictureList =  new ArrayList<>();
 
-    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList, InputStream pictureStream) {
+    public Professor(int id, String name, String description, String professorRoom, String professorEmail, List<String> classesList, InputStream pictureStream) {   
         mID = id;
         mName = name;
         mDescription = description;

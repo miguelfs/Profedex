@@ -2,17 +2,25 @@ package com.partiufast.profedex.api;
 
 import com.partiufast.profedex.data.CommentResponse;
 import com.partiufast.profedex.data.Message;
+import com.partiufast.profedex.data.PicturePath;
 import com.partiufast.profedex.data.ProfessorResponse;
 import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.data.User;
 
 import java.io.InputStream;
+import java.util.List;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -58,6 +66,14 @@ public interface ApiInterface {
                               @Path("comment_id") int commentID,
                               @Field("user_id") int userID,
                               @Field("vote_val") int value);
+
+    @Multipart
+    @POST("/professor/{id}/picture")
+    Call<Message> upload(@Part("description") RequestBody description,
+                         @Part MultipartBody.Part file);
+
+    @GET("/professor/{id}/picture")
+    Call<List<PicturePath>> getPictureList(@Path("id") int professorID);
 
     @FormUrlEncoded
     @POST("/login")
