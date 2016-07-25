@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     static final String profileTag = "PROFILE_FRAGMENT";
     static final String professorListTag = "TEACHER_LIST_FRAGMENT";
     static final String professorInfoTag = "PROFESSOR_INFO_FRAGMENT";
+
     private DrawerLayout mDrawer;
     private Toolbar mToolbar;
     private NavigationView mNavDrawer;
@@ -111,13 +112,15 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onBackStackChanged() {
                 FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentManager.BackStackEntry bk = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1);
-                String name = bk.getName();
-                Fragment fragment = fragmentManager.findFragmentByTag(name);
-                if (fragment instanceof TeacherListFragment)
-                    mFloatingButton.show();
-                else
-                    mFloatingButton.hide();
+                if (fragmentManager.getBackStackEntryCount() != 0) {
+                    FragmentManager.BackStackEntry bk = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1);
+                    String name = bk.getName();
+                    Fragment fragment = fragmentManager.findFragmentByTag(name);
+                    if (fragment instanceof TeacherListFragment)
+                        mFloatingButton.show();
+                    else
+                        mFloatingButton.hide();
+                }
             }
         });
 

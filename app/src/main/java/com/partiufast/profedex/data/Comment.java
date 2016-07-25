@@ -50,4 +50,8 @@ public class Comment implements Serializable {
     public String getUserName() {
         return mUserName;
     }
+
+    public int getVote() {
+        return mVote;
+    }
 }

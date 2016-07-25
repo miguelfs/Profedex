@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="8dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -11,7 +11,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:padding="8dp">
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -19,22 +19,65 @@
                 android:id="@+id/profile_picture"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
+                android:src="@drawable/ic_person_black_48dp"
                 android:layout_marginRight="16dp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/user_name"
+                android:text="User Name"
                 android:layout_toRightOf="@+id/profile_picture"
                 android:layout_alignParentTop="true"
-                android:textSize="30sp"/>
+                android:textSize="20sp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/comment_text"
-                android:layout_toRightOf="@+id/profile_picture"
-                android:layout_below="@+id/user_name" />
+                android:text="@string/lorem_ipsum"
+                android:layout_toLeftOf="@+id/linearLayout2"
+                android:layout_below="@+id/profile_picture"
+                android:layout_alignParentLeft="true" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/linearLayout2">
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_up"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:src="@drawable/ic_thumb_up_black_18dp"/>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button_down"
+                    android:src="@drawable/ic_thumb_down_black_18dp"
+                    android:layout_alignBottom="@+id/comment_text"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="100"
+                android:id="@+id/votes"
+                android:paddingRight="4dp"
+                android:layout_alignBottom="@+id/user_name"
+                android:layout_toLeftOf="@+id/linearLayout2"
+                android:layout_toStartOf="@+id/linearLayout2" />
+
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

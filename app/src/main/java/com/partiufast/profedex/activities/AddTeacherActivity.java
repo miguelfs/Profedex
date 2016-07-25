@@ -78,7 +78,6 @@ public class AddTeacherActivity extends AppCompatActivity {
                 mTeacherEmail.getText().toString(),
                 mTeacherDescription.getText().toString(),
                 mTeacherRoom.getText().toString());
-
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message>call, Response<Message> response) {

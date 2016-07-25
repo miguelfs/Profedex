@@ -50,6 +50,13 @@ public interface ApiInterface {
                                @Field("rating_value") float rating);
 
     @FormUrlEncoded
+    @POST("/professor/{id}/comment/{comment_id}/vote")
+    Call<Message> voteComment(@Path("id") int professorID,
+                              @Path("comment_id") int commentID,
+                              @Field("user_id") int userID,
+                              @Field("vote_val") int value);
+
+    @FormUrlEncoded
     @POST("/login")
     Call<User> login(@Field("email") String username, @Field("password") String password);
 

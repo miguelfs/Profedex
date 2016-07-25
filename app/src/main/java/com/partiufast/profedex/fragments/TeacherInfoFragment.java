@@ -13,13 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.partiufast.profedex.CommentAdapter;
+import com.partiufast.profedex.InfoAdapter;
 import com.partiufast.profedex.R;
 import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.api.ApiInterface;
@@ -28,7 +27,6 @@ import com.partiufast.profedex.data.Comment;
 import com.partiufast.profedex.data.CommentResponse;
 import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.Professor;
-import com.partiufast.profedex.data.ProfessorResponse;
 import com.partiufast.profedex.data.Rating;
 import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.views.RatingView;
@@ -50,11 +48,12 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     private Professor professor;
     private TextView profName;
     private TextView profDescription;
+    private ImageView profImg;
+    ArrayList<Rating> ratings = new ArrayList<>();
     private Button commentButton;
     private EditText commentEditText;
-    ArrayList<Comment> comments = new ArrayList<>();
-    ArrayList<Rating> ratings = new ArrayList<>();
-    CommentAdapter adapter;
+    ArrayList<Object> comments = new ArrayList<>();
+    InfoAdapter adapter;
 
     private OnFragmentInteractionListener mListener;
 
@@ -88,18 +87,25 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_teacher_info, container, false);
-        profName = (TextView) rootView.findViewById(R.id.teacher_name_text_view);
-        profDescription = (TextView) rootView.findViewById(R.id.description_teacher_text_view);
-        profName.setText(professor.getName());
-        profDescription.setText(professor.getDescription());
+//        profName = (TextView) rootView.findViewById(R.id.teacher_name_text_view);
+//        profDescription = (TextView) rootView.findViewById(R.id.description_teacher_text_view);
+//        profImg = (ImageView) rootView.findViewById(R.id.professor_picture);
+//        profName.setText(professor.getName());
+//        profDescription.setText(professor.getDescription());
 
         // Comment List
         RecyclerView rv = (RecyclerView)rootView.findViewById(R.id.comments);
         LinearLayoutManager llm = new LinearLayoutManager(rootView.getContext());
         rv.setLayoutManager(llm);
-        getCommentData();
-        adapter = new CommentAdapter(comments);
+
+        comments.add(professor);
+        adapter = new InfoAdapter(comments, this);
         rv.setAdapter(adapter);
+        getCommentData();
+
+        // set header for RecyclerView
+        //RecyclerViewHeader header = (RecyclerViewHeader) rootView.findViewById(R.id.header);
+        //header.attachTo(rv);
 
         commentButton = (Button) rootView.findViewById(R.id.comment_button);
         commentEditText = (EditText) rootView.findViewById(R.id.comment_edit_text);
@@ -111,7 +117,6 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
         // Ratings
         getRatingData();
-
 
         return rootView;
     }
@@ -253,4 +258,35 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
     }
 
+    public void sendCommentVote(Comment comment, int value) {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<Message> call = apiService
+                .voteComment(professor.getID(), comment.getID(), AppController.getInstance().user.getId(), value);
+        call.enqueue(new Callback<Message>() {
+            @Override
+            public void onResponse(Call<Message>call, Response<Message> response) {
+                if (response.body() != null) {
+                    if (response.body().isError()) {
+                        Toast.makeText(getActivity(), response.body().getMessage(),
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else {
+                        Toast.makeText(getActivity(), "Voted",
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "OK");
+                    }
+                }
+                else {
+                    Toast.makeText(getActivity(), "Connection error.",
+                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, "ERROR");
+                }
+            }
+            @Override
+            public void onFailure(Call<Message>call, Throwable t) {
+                // Log error here since request failed
+                Log.e(TAG, t.toString());
+            }
+        });
+    }
 }
