@@ -9,6 +9,7 @@ import com.partiufast.profedex.data.User;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -21,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.PartMap;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -33,13 +35,21 @@ public interface ApiInterface {
                                           @Query("order") String order,
                                           @Query("start") int start,
                                           @Query("limit") int limit);
+
     @FormUrlEncoded
     @POST("/professor")
     Call<Message> createProfessor(@Field("name") String name,
                                   @Field("email") String email,
                                   @Field("description") String description,
-                                  @Field("room") String room,
-                                  @Field("picturestream")InputStream pictureStream);
+                                  @Field("room") String room);
+
+    @Multipart
+    @POST("/professor")//@PartMap() Map<String, RequestBody> data,
+    Call<Message> createProfessorPic( @Part("name") RequestBody name,
+                                      @Part("email") RequestBody email,
+                                      @Part("room") RequestBody room,
+                                      @Part("description") RequestBody description,
+                                      @Part MultipartBody.Part pic);
 
     @GET("/professor/{id}/comment")
     Call<CommentResponse> getComments(@Path("id") int professorID);

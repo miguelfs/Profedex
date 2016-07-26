@@ -3,14 +3,20 @@ package com.partiufast.profedex.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -24,9 +30,19 @@ import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.Professor;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.HashMap;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +58,9 @@ public class AddTeacherActivity extends AppCompatActivity {
     private Context mContext;
     private ImageView mTeacherImageView;
     private TextView mHintPictureTextView;
-    InputStream inputStream;
+    private Uri uri;
+    private String fileMime;
+    File tempFile;
     BufferedInputStream buf;
     Bitmap bMap;
 
@@ -65,9 +83,6 @@ public class AddTeacherActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendProfessorData();
-                //Intent intent = new Intent(AddTeacherActivity.this, MainActivity.class);
-                //intent.putExtra(NEW_TEACHER_DATA_INTENT, mProfessor);
-                //startActivity(intent);
                 finish();
             }
         });
@@ -92,16 +107,39 @@ public class AddTeacherActivity extends AppCompatActivity {
         }
     }
 
+    public static final String MULTIPART_FORM_DATA = "multipart/form-data";
+
     public Activity getInstance() {return this;}
+
+    @NonNull
+    private RequestBody createPartFromString(String descriptionString) {
+        return RequestBody.create(
+                MediaType.parse(MULTIPART_FORM_DATA), descriptionString);
+    }
+
+    @NonNull
+    private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
+        //File file = new File(getRealPathFromUri(this, fileUri));
+        // create RequestBody instance from file
+        RequestBody requestFile =
+                RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), tempFile);
+        // MultipartBody.Part is used to send also the actual file name
+        return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
+    }
 
     private void sendProfessorData() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<Message> call = apiService.createProfessor(mTeacherName.getText().toString(),
-                mTeacherEmail.getText().toString(),
-                mTeacherDescription.getText().toString(),
-                mTeacherRoom.getText().toString(),
-                inputStream
-                );
+
+        MultipartBody.Part pic = prepareFilePart("picture", uri);
+        //RequestBody picture = RequestBody.create(MediaType.parse("image/*"), file);
+
+        RequestBody name = createPartFromString(mTeacherName.getText().toString());
+        RequestBody email = createPartFromString(mTeacherEmail.getText().toString());
+        RequestBody room = createPartFromString(mTeacherRoom.getText().toString());
+        RequestBody description = createPartFromString(mTeacherDescription.getText().toString());
+
+        Call<Message> call = apiService.createProfessorPic(name, email, room, description, pic);
+
         call.enqueue(new Callback<Message>() {
             @Override
             public void onResponse(Call<Message>call, Response<Message> response) {
@@ -132,6 +170,23 @@ public class AddTeacherActivity extends AppCompatActivity {
         startActivityForResult(intent, SELECT_PICTURE);
     }
 
+    public File convertStream(InputStream input) throws IOException {
+        byte[] buffer = new byte[input.available()];
+        input.read(buffer);
+        File temp = File.createTempFile("prefix","."+fileMime, getCacheDir()); //new File(getFilesDir(), "tmp."+fileMime);
+        OutputStream outStream = new FileOutputStream(temp);
+        outStream.write(buffer);
+        return temp;
+    }
+
+    public static String getRealPathFromUri(Activity activity, Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        Cursor cursor = activity.managedQuery(contentUri, proj, null, null, null);
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        return cursor.getString(column_index);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -141,8 +196,18 @@ public class AddTeacherActivity extends AppCompatActivity {
                 return;
             }
             try {
-                inputStream = this.getContentResolver().openInputStream(data.getData());
-                buf = new BufferedInputStream(inputStream);
+                uri = data.getData();
+                MimeTypeMap mime = MimeTypeMap.getSingleton();
+                fileMime = mime.getExtensionFromMimeType(getContentResolver().getType(uri));
+
+                InputStream inputStream = this.getContentResolver().openInputStream(data.getData());
+                try {
+                    tempFile = convertStream(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                InputStream i = this.getContentResolver().openInputStream(data.getData());
+                buf = new BufferedInputStream(i);
                 bMap = BitmapFactory.decodeStream(buf);
                 mHintPictureTextView.setVisibility(View.INVISIBLE);
                 mTeacherImageView.setImageBitmap(bMap);

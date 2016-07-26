@@ -11,11 +11,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.partiufast.profedex.InfoAdapter;
@@ -48,11 +46,11 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     // TODO: Rename and change types of parameters
     private Professor professor;
-    private Button commentButton;
+    private ImageButton commentButton;
     private EditText commentEditText;
     private InfoAdapter.ProfessorViewHolder professorViewHolder;
     private List<InfoAdapter.CommentViewHolder> commentHolderList;
-    private List<String> pictureURLs;
+    private List<String> pictureURLs = new ArrayList<>();
 
 
     ArrayList<Rating> ratings = new ArrayList<>();
@@ -102,7 +100,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         rv.setAdapter(adapter);
         getCommentData();
 
-        commentButton = (Button) rootView.findViewById(R.id.comment_button);
+        commentButton = (ImageButton) rootView.findViewById(R.id.comment_button);
         commentEditText = (EditText) rootView.findViewById(R.id.comment_edit_text);
         commentButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -311,7 +309,10 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                         for(PicturePath p : response.body()) {
                             pictureURLs.add(p.getPicturePath());
                         }
-                        Toast.makeText(getActivity(), response.body().get(0).picturePath, Toast.LENGTH_LONG).show();
+                        if ( response.body().size() > 0 )
+                            Toast.makeText(getActivity(), response.body().get(0).picturePath, Toast.LENGTH_LONG).show();
+                        else
+                            Toast.makeText(getActivity(), "No picture for this professor", Toast.LENGTH_LONG).show();
                         Log.d(TAG, "OK");
                 }
                 else {
@@ -328,6 +329,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     }
 
     public void getPictureData() {
-        Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0)).into(professorViewHolder.profImg);
+        if (pictureURLs.size() > 0)
+            Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0)).into(professorViewHolder.profImg);
     }
 }
