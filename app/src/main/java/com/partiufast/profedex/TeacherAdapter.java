@@ -48,11 +48,11 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherI
             Bitmap bitmap = mProfessorList.get(position).getBitmapProfessorPicture();
             final Professor p = mProfessorList.get(position);
             holder.mTeacherNameButton.setText(string);
-            if (bitmap != null) {
+            /*if (bitmap != null) {
                 holder.mPictureTeacherImageView.setImageBitmap(bitmap);
             } else {
                 holder.mPictureTeacherImageView.setImageResource(R.drawable.walter_1);
-            }
+            }*/
             holder.mTeacherNameButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -129,10 +129,12 @@ public class LoginActivity extends Activity {
                     }
                     else {
                         Toast.makeText(getApplicationContext(), "Error: " + response.body().getMessage(), Toast.LENGTH_LONG).show();
+                        hideDialog();
                     }
                 }
                 else {
                     Toast.makeText(getApplicationContext(), "Error: Response Error", Toast.LENGTH_LONG).show();
+                    hideDialog();
                 }
             }
 
