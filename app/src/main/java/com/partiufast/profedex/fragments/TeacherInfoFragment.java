@@ -330,6 +330,8 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     public void getPictureData() {
         if (pictureURLs.size() > 0)
-            Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0)).into(professorViewHolder.profImg);
+            Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0))
+                    .placeholder( R.drawable.progress_animation )
+                    .into(professorViewHolder.profImg);
     }
 }

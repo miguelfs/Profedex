@@ -22,7 +22,7 @@
 
             <ImageView
                 android:layout_width="150dp"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/professor_picture"
                 android:scaleHeight="40%"
                 android:scaleWidth="40%"
@@ -58,8 +58,10 @@
             android:layout_alignParentBottom="false"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true">
-
-            <!--<com.partiufast.profedex.views.RatingView
+            <!--<RatingBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <com.partiufast.profedex.views.RatingView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/view"

@@ -58,7 +58,7 @@ public class RatingView extends RelativeLayout implements RatingBar.OnRatingBarC
 
     private void init(Context context, AttributeSet attrs, int defStyle) {
 
-        rootView = inflate(context, R.layout.rating_view, this);
+        rootView = inflate(context, R.layout.rating_view_big, this);
         mRatingName = (TextView) rootView.findViewById(R.id.rating_name);
         mRatingBar = (RatingBar) rootView.findViewById(R.id.rating_bar);
         mRatingBar.setOnRatingBarChangeListener(this);
