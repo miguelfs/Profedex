@@ -23,6 +23,7 @@ import com.partiufast.profedex.api.ApiInterface;
 import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.data.Comment;
 import com.partiufast.profedex.data.CommentResponse;
+import com.partiufast.profedex.data.CommentSent;
 import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.PicturePath;
 import com.partiufast.profedex.data.Professor;
@@ -31,7 +32,9 @@ import com.partiufast.profedex.data.RatingResponse;
 import com.partiufast.profedex.views.RatingView;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -233,15 +236,15 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     }
 
     public void sendCommentData() {
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<Message> call =
-                apiService.createComment(professor.getID(),
-                        AppController.getInstance().user.getId(),
-                        commentEditText.getText().toString());
 
-        call.enqueue(new Callback<Message>() {
+        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+        Call<CommentSent> call = apiService.createComment(professor.getID(),
+                            AppController.getInstance().user.getId(),
+                            commentEditText.getText().toString());
+
+        call.enqueue(new Callback<CommentSent>() {
             @Override
-            public void onResponse(Call<Message>call, Response<Message> response) {
+            public void onResponse(Call<CommentSent>call, Response<CommentSent> response) {
                 if (response.body() != null) {
                     if (response.body().isError()) {
                         Toast.makeText(getActivity(), response.body().getMessage(),
@@ -250,6 +253,15 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                     else {
                         Toast.makeText(getActivity(), "Comment posted.",
                                 Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "OK");
+
+                        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                        String dateTime = sdf1.format(new Date());
+                        Comment c = new Comment(response.body().getID(), commentEditText.getText().toString(), dateTime, professor.getID(),
+                                AppController.getInstance().user.getId(),  AppController.getInstance().user.getName(), 0);
+
+                        comments.add(c);
+                        adapter.notifyDataSetChanged();
                         Log.d(TAG, "OK");
                     }
                 }
@@ -260,14 +272,14 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                 }
             }
             @Override
-            public void onFailure(Call<Message>call, Throwable t) {
+            public void onFailure(Call<CommentSent>call, Throwable t) {
                 // Log error here since request failed
                 Log.e(TAG, t.toString());
             }
         });
     }
 
-    public void sendCommentVote(Comment comment, int value) {
+    public void sendCommentVote(final Comment comment, int value) {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<Message> call =
                 apiService.voteComment(professor.getID(),
@@ -282,12 +294,11 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                                 Toast.LENGTH_LONG).show();
                     }
                     else {
-                        Toast.makeText(getActivity(), "Voted", Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "OK");
+                        showToast("Voted");
                     }
                 }
                 else {
-                    Toast.makeText(getActivity(), "Connection error.", Toast.LENGTH_LONG).show();
+                    showToast( "Connection error.");
                     Log.d(TAG, "ERROR");
                 }
             }
@@ -310,13 +321,13 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                             pictureURLs.add(p.getPicturePath());
                         }
                         if ( response.body().size() > 0 )
-                            Toast.makeText(getActivity(), response.body().get(0).picturePath, Toast.LENGTH_LONG).show();
+                            showToast(response.body().get(0).picturePath);
                         else
-                            Toast.makeText(getActivity(), "No picture for this professor", Toast.LENGTH_LONG).show();
+                            showToast("No picture for this professor");
                         Log.d(TAG, "OK");
                 }
                 else {
-                    Toast.makeText(getActivity(), "Connection error.", Toast.LENGTH_LONG).show();
+                    showToast( "Connection error.");
                     Log.d(TAG, "ERROR PICTURE");
                 }
             }
@@ -328,10 +339,17 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
     }
 
+    /*
+     * Gets the first picture from list
+     */
     public void getPictureData() {
         if (pictureURLs.size() > 0)
             Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0))
                     .placeholder( R.drawable.progress_animation )
                     .into(professorViewHolder.profImg);
+    }
+
+    private void showToast(String msg) {
+        Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
     }
 }

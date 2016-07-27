@@ -116,13 +116,6 @@ public class TeacherListFragment extends Fragment {
             }
         });
 
-        /**
-         * Just to debug
-         */
-//        for(int index = 0; index < 3; index++)
-//            addTeacherToList(new Professor(index, "Anatoli Leontiev", getResources().getString(R.string.lorem_ipsum), "H 216", "anatoli@im.ufrj.br",
-//                    Arrays.asList("Calculo 3", "Instrumentação e Técnicas de Medidas"),8, 8 ));
-
         if (mAddedProfessor != null)
             addTeacherToList(mAddedProfessor);
 

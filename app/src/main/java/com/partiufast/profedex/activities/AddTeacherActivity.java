@@ -121,15 +121,18 @@ public class AddTeacherActivity extends AppCompatActivity {
     private MultipartBody.Part prepareFilePart(String partName, Uri fileUri) {
         //File file = new File(getRealPathFromUri(this, fileUri));
         // create RequestBody instance from file
-        RequestBody requestFile =
-                RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), tempFile);
-        // MultipartBody.Part is used to send also the actual file name
-        return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
+        if (tempFile != null) {
+            RequestBody requestFile =
+                    RequestBody.create(MediaType.parse(MULTIPART_FORM_DATA), tempFile);
+            // MultipartBody.Part is used to send also the actual file name
+            return MultipartBody.Part.createFormData(partName, tempFile.getName(), requestFile);
+        }
+        else
+            return null;
     }
 
     private void sendProfessorData() {
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
         MultipartBody.Part pic = prepareFilePart("picture", uri);
         //RequestBody picture = RequestBody.create(MediaType.parse("image/*"), file);
 

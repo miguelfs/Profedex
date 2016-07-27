@@ -48,6 +48,7 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherI
             Bitmap bitmap = mProfessorList.get(position).getBitmapProfessorPicture();
             final Professor p = mProfessorList.get(position);
             holder.mTeacherNameButton.setText(string);
+            // This causes nullpointer exception
             /*if (bitmap != null) {
                 holder.mPictureTeacherImageView.setImageBitmap(bitmap);
             } else {

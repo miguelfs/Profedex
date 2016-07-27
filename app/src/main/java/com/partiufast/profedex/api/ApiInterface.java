@@ -1,6 +1,7 @@
 package com.partiufast.profedex.api;
 
 import com.partiufast.profedex.data.CommentResponse;
+import com.partiufast.profedex.data.CommentSent;
 import com.partiufast.profedex.data.Message;
 import com.partiufast.profedex.data.PicturePath;
 import com.partiufast.profedex.data.ProfessorResponse;
@@ -56,9 +57,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("/professor/{id}/comment")
-    Call<Message> createComment(@Path("id") int professorID,
-                                @Field("user_id") int userID,
-                                @Field("comment") String comment);
+    Call<CommentSent> createComment(@Path("id") int professorID,
+                                    @Field("user_id") int userID,
+                                    @Field("comment") String comment);
 
     @GET("/professor/{id}/rating")
     Call<RatingResponse> getRatings(@Path("id") int professorID);
