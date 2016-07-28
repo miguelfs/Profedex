@@ -3,6 +3,7 @@ package com.partiufast.profedex.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -113,7 +114,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
         });
         // Ratings
         getRatingData();
-        getPicturePaths();
+
         return rootView;
     }
 
@@ -311,6 +312,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     }
 
     public void getPicturePaths() {
+        Log.d(TAG, "GETTING PATHS");
         ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
         Call<List<PicturePath>> call = apiService.getPictureList(professor.getID());
         call.enqueue(new Callback<List<PicturePath>>() {
@@ -320,8 +322,10 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                         for(PicturePath p : response.body()) {
                             pictureURLs.add(p.getPicturePath());
                         }
-                        if ( response.body().size() > 0 )
+                        if ( response.body().size() > 0 ) {
                             showToast(response.body().get(0).picturePath);
+                            getPictureData();
+                        }
                         else
                             showToast("No picture for this professor");
                         Log.d(TAG, "OK");
@@ -342,11 +346,14 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     /*
      * Gets the first picture from list
      */
-    public void getPictureData() {
-        if (pictureURLs.size() > 0)
+    private void getPictureData() {
+        Log.d(TAG, "GETTING PICTURE");
+        if (pictureURLs.size() > 0) {
+            Log.d(TAG, "THERE IS A PATH");
             Picasso.with(getContext()).load(ApiClient.getClient().baseUrl() + pictureURLs.get(0))
                     .placeholder( R.drawable.progress_animation )
                     .into(professorViewHolder.profImg);
+        }
     }
 
     private void showToast(String msg) {

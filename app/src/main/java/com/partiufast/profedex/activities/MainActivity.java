@@ -8,6 +8,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
@@ -16,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.partiufast.profedex.R;
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity
     private TeacherListFragment mTeacherFragment;
     private FloatingActionButton mFloatingButton;
 
+    private TextView mUserNameNav;
+    private TextView mEmailNav;
+
     public String mName;
     public String mEmail;
 
@@ -88,6 +93,11 @@ public class MainActivity extends AppCompatActivity
 
         mProfileFragment = new ProfileFragment();
         mTeacherFragment = new TeacherListFragment();
+
+        View header = LayoutInflater.from(this).inflate(R.layout.nav_header_main, null);
+        mNavDrawer.addHeaderView(header);
+        mUserNameNav = (TextView)header.findViewById(R.id.user_name_nav);
+        mEmailNav = (TextView)header.findViewById(R.id.email_nav);
 
         // SqLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -131,6 +141,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void hideFAB(boolean hide) {
+        if(hide)
+            mFloatingButton.hide();
+        else
+            mFloatingButton.show();
+    }
+
     private void logoutUser() {
         session.setLogin(false);
         db.deleteUsers();
@@ -152,6 +169,9 @@ public class MainActivity extends AppCompatActivity
         mEmail = user.get("email");*/
         if (AppController.getInstance().user.isError() == false) {
             mProfileFragment.updateUserInfo();
+            mUserNameNav.setText(AppController.getInstance().user.getName());
+            mEmailNav.setText(AppController.getInstance().user.getEmail());
+
             session.setLogin(true);
         }
         else {

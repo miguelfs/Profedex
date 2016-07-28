@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#DD2120</color>
     <color name="colorPrimaryDark">#670706</color>
-    <color name="colorAccent">#009688</color>
+    <color name="colorAccent">#28aafd</color> <!--#009688-->
     <color name="profedexRed">#DD2120</color>
     <color name="bg_login">#26AE90</color>
     <color name="bg_register">#2E3237</color>

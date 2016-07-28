@@ -15,6 +15,7 @@ import android.widget.RatingBar;
 import com.partiufast.profedex.DividerItemDecoration;
 import com.partiufast.profedex.EndlessRecyclerViewScrollListener;
 import com.partiufast.profedex.R;
+import com.partiufast.profedex.activities.MainActivity;
 import com.partiufast.profedex.api.ApiInterface;
 import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.data.Professor;
@@ -95,7 +96,7 @@ public class TeacherListFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View rootView =  inflater.inflate(R.layout.fragment_teachers, container, false);
-
+        //((MainActivity)getActivity()).hideFAB(false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.teacherRecyclerView);
         mTeacherAdapter = new TeacherAdapter(mProfessorList);
         mLayoutManager = new LinearLayoutManager(getActivity());

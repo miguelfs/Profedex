@@ -114,7 +114,7 @@ public class InfoAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                 vh.profName.setText(p.getName());
                 vh.profDescription.setText(p.getDescription());
                 mFragment.setProfessorViewHolder(vh);
-                mFragment.getPictureData();
+                mFragment.getPicturePaths();
                 break;
             case COMMENT:
                 final Comment c = (Comment)items.get(position);

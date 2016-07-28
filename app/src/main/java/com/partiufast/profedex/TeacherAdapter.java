@@ -4,29 +4,35 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.data.Professor;
 import com.partiufast.profedex.fragments.TeacherInfoFragment;
+import com.partiufast.profedex.helper.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
 public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherItemViewHolder> {
     ArrayList<Professor> mProfessorList;
     Context mContext;
+    View mView;
 
     public class teacherItemViewHolder extends RecyclerView.ViewHolder {
         public Button mTeacherNameButton;
         public ImageView mPictureTeacherImageView;
 
-        public teacherItemViewHolder(View itemView) {
-            super(itemView);
+        public teacherItemViewHolder(View itemViews) {
+            super(itemViews);
+            mView = itemView;
             mTeacherNameButton = (Button) itemView.findViewById(R.id.teacherNameButton);
-            mPictureTeacherImageView = (ImageView) itemView.findViewById(R.id.pictureImageView);
+            mPictureTeacherImageView = (ImageView) itemView.findViewById(R.id.circle_crop);
             mContext = itemView.getContext();
         }
     }
@@ -48,6 +54,11 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherI
             Bitmap bitmap = mProfessorList.get(position).getBitmapProfessorPicture();
             final Professor p = mProfessorList.get(position);
             holder.mTeacherNameButton.setText(string);
+
+            CircleTransform circle = new CircleTransform();
+            Picasso.with(mContext).load(ApiClient.getClient().baseUrl() + p.getProfessorPicture())
+                        .placeholder( R.drawable.progress_animation ).transform(circle)
+                        .into(holder.mPictureTeacherImageView);
             // This causes nullpointer exception
             /*if (bitmap != null) {
                 holder.mPictureTeacherImageView.setImageBitmap(bitmap);
@@ -65,6 +76,7 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherI
                             .commit();
                 }
             });
+
     }
 
     @Override
