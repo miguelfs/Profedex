@@ -323,7 +323,7 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
                             pictureURLs.add(p.getPicturePath());
                         }
                         if ( response.body().size() > 0 ) {
-                            showToast(response.body().get(0).picturePath);
+                            //showToast(response.body().get(0).picturePath);
                             getPictureData();
                         }
                         else

@@ -50,7 +50,7 @@ public class TeacherAdapter extends RecyclerView.Adapter<TeacherAdapter.teacherI
 
         @Override
     public void onBindViewHolder(teacherItemViewHolder holder, final int position) {
-            String string =  mProfessorList.get(position).getID() + ": " + mProfessorList.get(position).getName();
+            String string =  mProfessorList.get(position).getName(); // mProfessorList.get(position).getID() + ": " +
             Bitmap bitmap = mProfessorList.get(position).getBitmapProfessorPicture();
             final Professor p = mProfessorList.get(position);
             holder.mTeacherNameButton.setText(string);

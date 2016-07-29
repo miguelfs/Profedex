@@ -203,4 +203,9 @@ public class TeacherListFragment extends Fragment {
             }
         });
     }
+
+    public void refreshData() {
+        mProfessorList.clear();
+        getProfessorData("professor_id", "asc", 0, 100);
+    }
 }

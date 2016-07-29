@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity
 
     static final int LOGIN_REQUEST = 0;
     static final int CHANGE_CENTER = 1;
+    static final int NEW_TEACHER_INTENT = 2;
     static final String profileTag = "PROFILE_FRAGMENT";
     static final String professorListTag = "TEACHER_LIST_FRAGMENT";
     static final String professorInfoTag = "PROFESSOR_INFO_FRAGMENT";
@@ -132,6 +133,8 @@ public class MainActivity extends AppCompatActivity
                     else
                         mFloatingButton.hide();
                 }
+                else
+                    mFloatingButton.show();
             }
         });
 
@@ -141,6 +144,7 @@ public class MainActivity extends AppCompatActivity
             mTeacherFragment.setNewTeacherToList(mProfessor);
         }
     }
+
 
     public void hideFAB(boolean hide) {
         if(hide)
@@ -192,6 +196,19 @@ public class MainActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+        /*
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        if (fragmentManager.getBackStackEntryCount() != 0) {
+            FragmentManager.BackStackEntry bk = fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount()-1);
+            String name = bk.getName();
+            Fragment fragment = fragmentManager.findFragmentByTag(name);
+            if (fragment.getClass().equals(TeacherInfoFragment.class))
+                mFloatingButton.show();
+        }
+        else{
+            mFloatingButton.show();
+        }*/
+
     }
 
     @Override
@@ -212,11 +229,11 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_settings) {
             return true;
         }
-        if (id == R.id.select_campus){
+        /*if (id == R.id.select_campus){
             Intent intent = new Intent(MainActivity.this, CentroActivity.class);
             startActivityForResult(intent, CHANGE_CENTER);
             return true;
-        }
+        }*/
         item.setChecked(true);
         setTitle(item.getTitle());
         return super.onOptionsItemSelected(item);
@@ -306,6 +323,9 @@ public class MainActivity extends AppCompatActivity
              * Do something with the result
              */
         }
+        else if (requestCode == NEW_TEACHER_INTENT) {
+            mTeacherFragment.refreshData();
+        }
     }
 
     /*
@@ -343,7 +363,7 @@ public class MainActivity extends AppCompatActivity
                     }
                     if (fragment instanceof TeacherListFragment) {
                         Intent intent = new Intent(MainActivity.this, AddTeacherActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent,NEW_TEACHER_INTENT);
                         break;
                     }
                 }
