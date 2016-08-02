@@ -51,4 +51,8 @@
     <string name="teacher_room_hint">Sala do professor</string>
     <string name="teacher_email_hint">email do professor</string>
     <string name="walter_white">Walter White</string>
+    <string name="dialog_message_login">Você precisa fazer login para fazer isso.</string>
+    <string name="dialog_title_login">Faça login.</string>
+    <string name="login">Fazer login</string>
+    <string name="cancel">Cancelar</string>
 </resources>

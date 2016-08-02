@@ -20,6 +20,15 @@ public class AppController extends Application {
 		user = new User();
 	}
 
+	public User getUser () {return user;}
+
+	public boolean isLogged() {
+		if (user != null)
+			return true;
+		else
+			return false;
+	}
+
 	public static synchronized AppController getInstance() {
 		return mInstance;
 	}

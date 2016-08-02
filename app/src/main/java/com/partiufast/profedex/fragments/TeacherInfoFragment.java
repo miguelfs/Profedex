@@ -1,10 +1,12 @@
 package com.partiufast.profedex.fragments;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -237,47 +239,51 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
     }
 
     public void sendCommentData() {
+        if(! (AppController.getInstance().isLogged())) {
+            createDialog();
+        }
+        else {
+            ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+            Call<CommentSent> call = apiService.createComment(professor.getID(),
+                    AppController.getInstance().user.getId(),
+                    commentEditText.getText().toString());
 
-        ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-        Call<CommentSent> call = apiService.createComment(professor.getID(),
-                            AppController.getInstance().user.getId(),
-                            commentEditText.getText().toString());
+            call.enqueue(new Callback<CommentSent>() {
+                @Override
+                public void onResponse(Call<CommentSent>call, Response<CommentSent> response) {
+                    if (response.body() != null) {
+                        if (response.body().isError()) {
+                            Toast.makeText(getActivity(), response.body().getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "Comment posted.",
+                                    Toast.LENGTH_LONG).show();
+                            Log.d(TAG, "OK");
 
-        call.enqueue(new Callback<CommentSent>() {
-            @Override
-            public void onResponse(Call<CommentSent>call, Response<CommentSent> response) {
-                if (response.body() != null) {
-                    if (response.body().isError()) {
-                        Toast.makeText(getActivity(), response.body().getMessage(),
-                                Toast.LENGTH_LONG).show();
+                            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                            String dateTime = sdf1.format(new Date());
+                            Comment c = new Comment(response.body().getID(), commentEditText.getText().toString(), dateTime, professor.getID(),
+                                    AppController.getInstance().user.getId(),  AppController.getInstance().user.getName(), 0);
+
+                            comments.add(c);
+                            adapter.notifyDataSetChanged();
+                            Log.d(TAG, "OK");
+                        }
                     }
                     else {
-                        Toast.makeText(getActivity(), "Comment posted.",
+                        Toast.makeText(getActivity(), "Connection error.",
                                 Toast.LENGTH_LONG).show();
-                        Log.d(TAG, "OK");
-
-                        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-                        String dateTime = sdf1.format(new Date());
-                        Comment c = new Comment(response.body().getID(), commentEditText.getText().toString(), dateTime, professor.getID(),
-                                AppController.getInstance().user.getId(),  AppController.getInstance().user.getName(), 0);
-
-                        comments.add(c);
-                        adapter.notifyDataSetChanged();
-                        Log.d(TAG, "OK");
+                        Log.d(TAG, "ERROR");
                     }
                 }
-                else {
-                    Toast.makeText(getActivity(), "Connection error.",
-                            Toast.LENGTH_LONG).show();
-                    Log.d(TAG, "ERROR");
+                @Override
+                public void onFailure(Call<CommentSent>call, Throwable t) {
+                    // Log error here since request failed
+                    Log.e(TAG, t.toString());
                 }
-            }
-            @Override
-            public void onFailure(Call<CommentSent>call, Throwable t) {
-                // Log error here since request failed
-                Log.e(TAG, t.toString());
-            }
-        });
+            });
+        }
     }
 
     public void sendCommentVote(final Comment comment, int value) {
@@ -358,5 +364,31 @@ public class TeacherInfoFragment extends Fragment implements RatingView.OnRating
 
     private void showToast(String msg) {
         Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+    }
+
+    private void createDialog() {
+        // 1. Instantiate an AlertDialog.Builder with its constructor
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(R.string.dialog_message_login)
+                .setTitle(R.string.dialog_title_login);
+
+        builder.setPositiveButton(R.string.login, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User clicked OK button
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // User cancelled the dialog
+                dialog.dismiss();
+            }
+        });
+        // 3. Get the AlertDialog from create()
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
     }
 }

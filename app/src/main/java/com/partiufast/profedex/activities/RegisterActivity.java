@@ -10,19 +10,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-
 import com.partiufast.profedex.R;
 import com.partiufast.profedex.api.ApiClient;
 import com.partiufast.profedex.api.ApiInterface;
-import com.partiufast.profedex.app.AppConfig;
-import com.partiufast.profedex.app.AppController;
 import com.partiufast.profedex.data.Message;
-import com.partiufast.profedex.data.User;
 import com.partiufast.profedex.helper.SQLiteHandler;
 import com.partiufast.profedex.helper.SessionManager;
 

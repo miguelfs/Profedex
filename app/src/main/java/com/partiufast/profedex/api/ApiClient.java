@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by lgos on 30/06/16.
  */
 public class ApiClient {
-    public static final String BASE_URL = "http://10.0.0.103:1234/";
+    public static final String BASE_URL = "http://10.0.2.2:1234/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
